@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.liferay.example.servicebuilder.extdb.model.UserLogin">
+		<field name="userId" type="long" />
+		<field name="lastLogin" type="Date" />
+		<field name="totalLogins" type="long" />
+		<field name="longestTimeBetweenLogins" type="long" />
+		<field name="shortestTimeBetweenLogins" type="long" />
+	</model>
+</model-hints>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sb-extdb.iml" filepath="$PROJECT_DIR$/.idea/modules/sb-extdb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sb-extdb-api/sb-extdb-api.iml" filepath="$PROJECT_DIR$/.idea/modules/sb-extdb-api/sb-extdb-api.iml" group="sb-extdb-api" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sb-extdb-api/sb-extdb-api_main.iml" filepath="$PROJECT_DIR$/.idea/modules/sb-extdb-api/sb-extdb-api_main.iml" group="sb-extdb-api" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sb-extdb-api/sb-extdb-api_test.iml" filepath="$PROJECT_DIR$/.idea/modules/sb-extdb-api/sb-extdb-api_test.iml" group="sb-extdb-api" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sb-extdb-api/sb-extdb-api_testIntegration.iml" filepath="$PROJECT_DIR$/.idea/modules/sb-extdb-api/sb-extdb-api_testIntegration.iml" group="sb-extdb-api" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sb-extdb-postlogin/sb-extdb-postlogin.iml" filepath="$PROJECT_DIR$/.idea/modules/sb-extdb-postlogin/sb-extdb-postlogin.iml" group="sb-extdb-postlogin" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sb-extdb-postlogin/sb-extdb-postlogin_main.iml" filepath="$PROJECT_DIR$/.idea/modules/sb-extdb-postlogin/sb-extdb-postlogin_main.iml" group="sb-extdb-postlogin" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sb-extdb-postlogin/sb-extdb-postlogin_test.iml" filepath="$PROJECT_DIR$/.idea/modules/sb-extdb-postlogin/sb-extdb-postlogin_test.iml" group="sb-extdb-postlogin" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sb-extdb-postlogin/sb-extdb-postlogin_testIntegration.iml" filepath="$PROJECT_DIR$/.idea/modules/sb-extdb-postlogin/sb-extdb-postlogin_testIntegration.iml" group="sb-extdb-postlogin" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sb-extdb-service/sb-extdb-service.iml" filepath="$PROJECT_DIR$/.idea/modules/sb-extdb-service/sb-extdb-service.iml" group="sb-extdb-service" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sb-extdb-service/sb-extdb-service_main.iml" filepath="$PROJECT_DIR$/.idea/modules/sb-extdb-service/sb-extdb-service_main.iml" group="sb-extdb-service" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sb-extdb-service/sb-extdb-service_test.iml" filepath="$PROJECT_DIR$/.idea/modules/sb-extdb-service/sb-extdb-service_test.iml" group="sb-extdb-service" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sb-extdb-service/sb-extdb-service_testIntegration.iml" filepath="$PROJECT_DIR$/.idea/modules/sb-extdb-service/sb-extdb-service_testIntegration.iml" group="sb-extdb-service" />
+    </modules>
+  </component>
+</project>

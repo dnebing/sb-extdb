@@ -1,0 +1,37 @@
+buildscript {
+	repositories {
+		maven {
+			url "https://repository.liferay.com/nexus/content/repositories/public/"
+		}
+		maven {
+			url "https://repository.liferay.com/nexus/content/repositories/liferay-public-releases/"
+		}
+	}
+	dependencies {
+		classpath group: "com.liferay", name: "com.liferay.gradle.plugins", version: "latest.release"
+	}
+}
+
+subprojects {
+	buildscript {
+			repositories {
+				maven {
+					url "https://repository.liferay.com/nexus/content/repositories/public/"
+				}
+				maven {
+					url "https://repository.liferay.com/nexus/content/repositories/liferay-public-releases"
+				}
+			}
+	}
+
+	apply plugin: "com.liferay.plugin"
+
+	repositories {		
+		maven {
+			url "https://repository.liferay.com/nexus/content/repositories/public/"
+		}
+		maven {
+			url "https://repository.liferay.com/nexus/content/repositories/liferay-public-releases/"
+		}
+	}
+}

@@ -1,0 +1,9 @@
+Bundle-Name: SB External DB API
+Bundle-SymbolicName: com.liferay.example.servicebuilder.extdb.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.example.servicebuilder.extdb.exception,\
+	com.liferay.example.servicebuilder.extdb.model,\
+	com.liferay.example.servicebuilder.extdb.service,\
+	com.liferay.example.servicebuilder.extdb.service.persistence
+-sources: true

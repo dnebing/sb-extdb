@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<beans
+        default-destroy-method="destroy"
+        default-init-method="afterPropertiesSet"
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+>
+
+    <!--
+        NOTE: Current restriction in LR7's handling of external data sources requires us to redefine the
+        liferayDataSource bean in our spring configuration.
+
+        The following beans define a new liferayDataSource based on the jdbc.ext. prefix in portal-ext.properties.
+      -->
+
+    <bean class="com.liferay.portal.dao.jdbc.spring.DataSourceFactoryBean" id="liferayDataSourceImpl">
+        <property name="propertyPrefix" value="jdbc.ext." />
+    </bean>
+
+    <bean class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy" id="liferayDataSource">
+        <property name="targetDataSource" ref="liferayDataSourceImpl" />
+    </bean>
+
+    <!--
+        So our entities are all appropriately tagged with the extDataSource, we'll alias the above
+        liferayDataSource so it matches the entities.
+      -->
+
+    <alias alias="extDataSource" name="liferayDataSource" />
+
+</beans>

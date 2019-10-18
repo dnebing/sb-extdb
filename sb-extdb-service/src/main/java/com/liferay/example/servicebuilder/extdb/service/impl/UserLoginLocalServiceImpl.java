@@ -18,11 +18,9 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.example.servicebuilder.extdb.model.UserLogin;
 import com.liferay.example.servicebuilder.extdb.service.base.UserLoginLocalServiceBaseImpl;
-import com.liferay.portal.kernel.cal.Duration;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import org.apache.commons.lang.time.StopWatch;
 
 import java.util.Date;
 
@@ -42,65 +40,92 @@ import java.util.Date;
  */
 @ProviderType
 public class UserLoginLocalServiceImpl extends UserLoginLocalServiceBaseImpl {
-	private static final Log logger = LogFactoryUtil.getLog(UserLoginLocalServiceImpl.class);
 
-    /**
-     * updateUserLogin: Updates the user login record with the given info.
-     * @param userId User who logged in.
-     * @param loginDate Date when the user logged in.
-     */
-    public void updateUserLogin(final long userId, final Date loginDate) {
-        UserLogin login = null;
+	/**
+	 * updateUserLogin: Updates the user login record with the given info.
+	 * @param userId User who logged in.
+	 * @param loginDate Date when the user logged in.
+	 */
+	public void updateUserLogin(final long userId, final Date loginDate) {
+		UserLogin login = null;
 
-        // first try to get the existing record for the user
-        try {
-            login = getUserLogin(userId);
-        } catch (PortalException e) {
-            logger.error("Error getting user login for user id " + userId, e);
-        }
+		// first try to get the existing record for the user
 
-        if (login == null) {
-            // user has never logged in before, need a new record
-            if (logger.isDebugEnabled()) logger.debug("User " + userId + " has never logged in before.");
+		try {
+			login = getUserLogin(userId);
+		}
+		catch (PortalException pe) {
+			logger.error("Error getting user login for user id " + userId, pe);
+		}
 
-            // create a new record
-            login = createUserLogin(userId);
+		if (login == null) {
 
-            // update the login date
-            login.setLastLogin(loginDate);
+			// user has never logged in before, need a new record
 
-            // initialize the values
-            login.setTotalLogins(1);
-            login.setShortestTimeBetweenLogins(Long.MAX_VALUE);
-            login.setLongestTimeBetweenLogins(0);
+			if (logger.isDebugEnabled())
+				logger.debug("User " + userId + " has never logged in before.");
 
-            // add the login
-            addUserLogin(login);
-        } else {
-            // user has logged in before, just need to update record.
-            if (logger.isDebugEnabled()) logger.debug("User " + userId + " has logged in before, updating the record.");
+			// create a new record
 
-            // increment the logins count
-            login.setTotalLogins(login.getTotalLogins() + 1);
+			login = createUserLogin(userId);
 
-            // determine the duration time between the current and last login
-            long duration = loginDate.getTime() - login.getLastLogin().getTime();
+			// update the login date
 
-            // if this duration is longer than last, update the longest duration.
-            if (duration > login.getLongestTimeBetweenLogins()) {
-                login.setLongestTimeBetweenLogins(duration);
-            }
+			login.setLastLogin(loginDate);
 
-            // if this duration is shorter than last, update the shortest duration.
-            if (duration < login.getShortestTimeBetweenLogins()) {
-                login.setShortestTimeBetweenLogins(duration);
-            }
+			// initialize the values
 
-            // update the last login timestamp
-            login.setLastLogin(loginDate);
+			login.setTotalLogins(1);
+			login.setShortestTimeBetweenLogins(Long.MAX_VALUE);
+			login.setLongestTimeBetweenLogins(0);
 
-            // update the record
-            updateUserLogin(login);
-        }
-    }
+			// add the login
+
+			addUserLogin(login);
+		}
+		else {
+
+			// user has logged in before, just need to update record.
+
+			if (logger.isDebugEnabled())
+				logger.debug(
+					"User " + userId +
+						" has logged in before, updating the record.");
+
+			// increment the logins count
+
+			login.setTotalLogins(login.getTotalLogins() + 1);
+
+			// determine the duration time between the current and last login
+
+			long duration =
+				loginDate.getTime() -
+					login.getLastLogin(
+					).getTime();
+
+			// if this duration is longer than last, update the longest duration.
+
+			if (duration > login.getLongestTimeBetweenLogins()) {
+				login.setLongestTimeBetweenLogins(duration);
+			}
+
+			// if this duration is shorter than last, update the shortest duration.
+
+			if (duration < login.getShortestTimeBetweenLogins()) {
+				login.setShortestTimeBetweenLogins(duration);
+			}
+
+			// update the last login timestamp
+
+			login.setLastLogin(loginDate);
+
+			// update the record
+
+			updateUserLogin(login);
+		}
+	}
+
+	private static final Log logger = LogFactoryUtil.getLog(
+		UserLoginLocalServiceImpl.class);
+
 }

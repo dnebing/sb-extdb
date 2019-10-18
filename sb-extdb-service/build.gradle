@@ -6,22 +6,21 @@ buildscript {
 
 apply plugin: "com.liferay.portal.tools.service.builder"
 
-dependencies {
-	compile 'com.liferay:com.liferay.osgi.util:3.0.0'
-
-	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bnd.annotation", version: "3.5.0"
-	compileOnly group: "com.liferay", name: "com.liferay.portal.spring.extender.api", version: "3.0.0"
-	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "3.0.0"
-	compileOnly group: "org.osgi", name: "org.osgi.core", version: "6.0.0"
-	compileOnly group: "org.osgi", name: "org.osgi.service.component.annotations", version: "1.3.0"
-
-    	compileOnly 'commons-lang:commons-lang:2.6'
-	compileOnly  project(':sb-extdb-api')
-}
-
 buildService {
 	apiDir = "../sb-extdb-api/src/main/java"
 	osgiModule = true
 	propsUtil = "com.liferay.example.servicebuilder.extdb.service.util.PropsUtil"
 	testDir = "src/main/test"
+}
+
+dependencies {
+	compile group: "com.liferay", name: "com.liferay.osgi.util", version: "3.0.0"
+
+	compileOnly  project(":sb-extdb-api")
+	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bnd.annotation", version: "3.5.0"
+	compileOnly group: "com.liferay", name: "com.liferay.portal.spring.extender.api", version: "3.0.0"
+	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "3.0.0"
+	compileOnly group: "commons-lang", name: "commons-lang", version: "2.6"
+	compileOnly group: "org.osgi", name: "org.osgi.core", version: "6.0.0"
+	compileOnly group: "org.osgi", name: "org.osgi.service.component.annotations", version: "1.3.0"
 }

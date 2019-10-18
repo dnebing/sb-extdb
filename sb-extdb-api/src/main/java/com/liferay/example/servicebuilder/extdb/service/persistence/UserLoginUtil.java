@@ -14,22 +14,23 @@
 
 package com.liferay.example.servicebuilder.extdb.service.persistence;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.example.servicebuilder.extdb.model.UserLogin;
-
-import com.liferay.osgi.util.ServiceTrackerFactory;
-
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
-import org.osgi.util.tracker.ServiceTracker;
+import java.io.Serializable;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
- * The persistence utility for the user login service. This utility wraps {@link com.liferay.example.servicebuilder.extdb.service.persistence.impl.UserLoginPersistenceImpl} and provides direct access to the database for CRUD operations. This utility should only be used by the service layer, as it must operate within a transaction. Never access this utility in a JSP, controller, model, or other front-end class.
+ * The persistence utility for the user login service. This utility wraps <code>com.liferay.example.servicebuilder.extdb.service.persistence.impl.UserLoginPersistenceImpl</code> and provides direct access to the database for CRUD operations. This utility should only be used by the service layer, as it must operate within a transaction. Never access this utility in a JSP, controller, model, or other front-end class.
  *
  * <p>
  * Caching information and settings can be found in <code>portal.properties</code>
@@ -37,12 +38,11 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see UserLoginPersistence
- * @see com.liferay.example.servicebuilder.extdb.service.persistence.impl.UserLoginPersistenceImpl
  * @generated
  */
-@ProviderType
 public class UserLoginUtil {
-	/*
+
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this class directly. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
@@ -70,10 +70,20 @@ public class UserLoginUtil {
 	}
 
 	/**
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#fetchByPrimaryKeys(Set)
+	 */
+	public static Map<Serializable, UserLogin> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys) {
+
+		return getPersistence().fetchByPrimaryKeys(primaryKeys);
+	}
+
+	/**
 	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<UserLogin> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
+
 		return getPersistence().findWithDynamicQuery(dynamicQuery);
 	}
 
@@ -82,6 +92,7 @@ public class UserLoginUtil {
 	 */
 	public static List<UserLogin> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
+
 		return getPersistence().findWithDynamicQuery(dynamicQuery, start, end);
 	}
 
@@ -91,9 +102,9 @@ public class UserLoginUtil {
 	public static List<UserLogin> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
 		OrderByComparator<UserLogin> orderByComparator) {
-		return getPersistence()
-				   .findWithDynamicQuery(dynamicQuery, start, end,
-			orderByComparator);
+
+		return getPersistence().findWithDynamicQuery(
+			dynamicQuery, start, end, orderByComparator);
 	}
 
 	/**
@@ -106,48 +117,51 @@ public class UserLoginUtil {
 	/**
 	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
-	public static UserLogin update(UserLogin userLogin,
-		ServiceContext serviceContext) {
+	public static UserLogin update(
+		UserLogin userLogin, ServiceContext serviceContext) {
+
 		return getPersistence().update(userLogin, serviceContext);
 	}
 
 	/**
-	* Caches the user login in the entity cache if it is enabled.
-	*
-	* @param userLogin the user login
-	*/
+	 * Caches the user login in the entity cache if it is enabled.
+	 *
+	 * @param userLogin the user login
+	 */
 	public static void cacheResult(UserLogin userLogin) {
 		getPersistence().cacheResult(userLogin);
 	}
 
 	/**
-	* Caches the user logins in the entity cache if it is enabled.
-	*
-	* @param userLogins the user logins
-	*/
+	 * Caches the user logins in the entity cache if it is enabled.
+	 *
+	 * @param userLogins the user logins
+	 */
 	public static void cacheResult(List<UserLogin> userLogins) {
 		getPersistence().cacheResult(userLogins);
 	}
 
 	/**
-	* Creates a new user login with the primary key. Does not add the user login to the database.
-	*
-	* @param userId the primary key for the new user login
-	* @return the new user login
-	*/
+	 * Creates a new user login with the primary key. Does not add the user login to the database.
+	 *
+	 * @param userId the primary key for the new user login
+	 * @return the new user login
+	 */
 	public static UserLogin create(long userId) {
 		return getPersistence().create(userId);
 	}
 
 	/**
-	* Removes the user login with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param userId the primary key of the user login
-	* @return the user login that was removed
-	* @throws NoSuchUserLoginException if a user login with the primary key could not be found
-	*/
+	 * Removes the user login with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param userId the primary key of the user login
+	 * @return the user login that was removed
+	 * @throws NoSuchUserLoginException if a user login with the primary key could not be found
+	 */
 	public static UserLogin remove(long userId)
-		throws com.liferay.example.servicebuilder.extdb.exception.NoSuchUserLoginException {
+		throws com.liferay.example.servicebuilder.extdb.exception.
+			NoSuchUserLoginException {
+
 		return getPersistence().remove(userId);
 	}
 
@@ -156,105 +170,104 @@ public class UserLoginUtil {
 	}
 
 	/**
-	* Returns the user login with the primary key or throws a {@link NoSuchUserLoginException} if it could not be found.
-	*
-	* @param userId the primary key of the user login
-	* @return the user login
-	* @throws NoSuchUserLoginException if a user login with the primary key could not be found
-	*/
+	 * Returns the user login with the primary key or throws a <code>NoSuchUserLoginException</code> if it could not be found.
+	 *
+	 * @param userId the primary key of the user login
+	 * @return the user login
+	 * @throws NoSuchUserLoginException if a user login with the primary key could not be found
+	 */
 	public static UserLogin findByPrimaryKey(long userId)
-		throws com.liferay.example.servicebuilder.extdb.exception.NoSuchUserLoginException {
+		throws com.liferay.example.servicebuilder.extdb.exception.
+			NoSuchUserLoginException {
+
 		return getPersistence().findByPrimaryKey(userId);
 	}
 
 	/**
-	* Returns the user login with the primary key or returns <code>null</code> if it could not be found.
-	*
-	* @param userId the primary key of the user login
-	* @return the user login, or <code>null</code> if a user login with the primary key could not be found
-	*/
+	 * Returns the user login with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param userId the primary key of the user login
+	 * @return the user login, or <code>null</code> if a user login with the primary key could not be found
+	 */
 	public static UserLogin fetchByPrimaryKey(long userId) {
 		return getPersistence().fetchByPrimaryKey(userId);
 	}
 
-	public static java.util.Map<java.io.Serializable, UserLogin> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys) {
-		return getPersistence().fetchByPrimaryKeys(primaryKeys);
-	}
-
 	/**
-	* Returns all the user logins.
-	*
-	* @return the user logins
-	*/
+	 * Returns all the user logins.
+	 *
+	 * @return the user logins
+	 */
 	public static List<UserLogin> findAll() {
 		return getPersistence().findAll();
 	}
 
 	/**
-	* Returns a range of all the user logins.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserLoginModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of user logins
-	* @param end the upper bound of the range of user logins (not inclusive)
-	* @return the range of user logins
-	*/
+	 * Returns a range of all the user logins.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>UserLoginModelImpl</code>.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of user logins
+	 * @param end the upper bound of the range of user logins (not inclusive)
+	 * @return the range of user logins
+	 */
 	public static List<UserLogin> findAll(int start, int end) {
 		return getPersistence().findAll(start, end);
 	}
 
 	/**
-	* Returns an ordered range of all the user logins.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserLoginModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of user logins
-	* @param end the upper bound of the range of user logins (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of user logins
-	*/
-	public static List<UserLogin> findAll(int start, int end,
-		OrderByComparator<UserLogin> orderByComparator) {
+	 * Returns an ordered range of all the user logins.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>UserLoginModelImpl</code>.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of user logins
+	 * @param end the upper bound of the range of user logins (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of user logins
+	 */
+	public static List<UserLogin> findAll(
+		int start, int end, OrderByComparator<UserLogin> orderByComparator) {
+
 		return getPersistence().findAll(start, end, orderByComparator);
 	}
 
 	/**
-	* Returns an ordered range of all the user logins.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserLoginModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of user logins
-	* @param end the upper bound of the range of user logins (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @param retrieveFromCache whether to retrieve from the finder cache
-	* @return the ordered range of user logins
-	*/
-	public static List<UserLogin> findAll(int start, int end,
-		OrderByComparator<UserLogin> orderByComparator,
-		boolean retrieveFromCache) {
-		return getPersistence()
-				   .findAll(start, end, orderByComparator, retrieveFromCache);
+	 * Returns an ordered range of all the user logins.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>UserLoginModelImpl</code>.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of user logins
+	 * @param end the upper bound of the range of user logins (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of user logins
+	 */
+	public static List<UserLogin> findAll(
+		int start, int end, OrderByComparator<UserLogin> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findAll(
+			start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
-	* Removes all the user logins from the database.
-	*/
+	 * Removes all the user logins from the database.
+	 */
 	public static void removeAll() {
 		getPersistence().removeAll();
 	}
 
 	/**
-	* Returns the number of user logins.
-	*
-	* @return the number of user logins
-	*/
+	 * Returns the number of user logins.
+	 *
+	 * @return the number of user logins
+	 */
 	public static int countAll() {
 		return getPersistence().countAll();
 	}
@@ -263,6 +276,21 @@ public class UserLoginUtil {
 		return _serviceTracker.getService();
 	}
 
-	private static ServiceTracker<UserLoginPersistence, UserLoginPersistence> _serviceTracker =
-		ServiceTrackerFactory.open(UserLoginPersistence.class);
+	private static ServiceTracker<UserLoginPersistence, UserLoginPersistence>
+		_serviceTracker;
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(UserLoginPersistence.class);
+
+		ServiceTracker<UserLoginPersistence, UserLoginPersistence>
+			serviceTracker =
+				new ServiceTracker<UserLoginPersistence, UserLoginPersistence>(
+					bundle.getBundleContext(), UserLoginPersistence.class,
+					null);
+
+		serviceTracker.open();
+
+		_serviceTracker = serviceTracker;
+	}
+
 }

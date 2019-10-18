@@ -14,14 +14,11 @@
 
 package com.liferay.example.servicebuilder.extdb.service.persistence.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.example.servicebuilder.extdb.exception.NoSuchUserLoginException;
 import com.liferay.example.servicebuilder.extdb.model.UserLogin;
 import com.liferay.example.servicebuilder.extdb.model.impl.UserLoginImpl;
 import com.liferay.example.servicebuilder.extdb.model.impl.UserLoginModelImpl;
 import com.liferay.example.servicebuilder.extdb.service.persistence.UserLoginPersistence;
-
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -33,7 +30,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
@@ -54,32 +50,28 @@ import java.util.Set;
  * </p>
  *
  * @author Brian Wing Shun Chan
- * @see UserLoginPersistence
- * @see com.liferay.example.servicebuilder.extdb.service.persistence.UserLoginUtil
  * @generated
  */
-@ProviderType
-public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
-	implements UserLoginPersistence {
-	/*
+public class UserLoginPersistenceImpl
+	extends BasePersistenceImpl<UserLogin> implements UserLoginPersistence {
+
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link UserLoginUtil} to access the user login persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use <code>UserLoginUtil</code> to access the user login persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = UserLoginImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(UserLoginModelImpl.ENTITY_CACHE_ENABLED,
-			UserLoginModelImpl.FINDER_CACHE_ENABLED, UserLoginImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(UserLoginModelImpl.ENTITY_CACHE_ENABLED,
-			UserLoginModelImpl.FINDER_CACHE_ENABLED, UserLoginImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(UserLoginModelImpl.ENTITY_CACHE_ENABLED,
-			UserLoginModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		UserLoginImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
 
 	public UserLoginPersistenceImpl() {
 		setModelClass(UserLogin.class);
@@ -92,8 +84,9 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 	 */
 	@Override
 	public void cacheResult(UserLogin userLogin) {
-		entityCache.putResult(UserLoginModelImpl.ENTITY_CACHE_ENABLED,
-			UserLoginImpl.class, userLogin.getPrimaryKey(), userLogin);
+		entityCache.putResult(
+			UserLoginModelImpl.ENTITY_CACHE_ENABLED, UserLoginImpl.class,
+			userLogin.getPrimaryKey(), userLogin);
 
 		userLogin.resetOriginalValues();
 	}
@@ -106,8 +99,10 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 	@Override
 	public void cacheResult(List<UserLogin> userLogins) {
 		for (UserLogin userLogin : userLogins) {
-			if (entityCache.getResult(UserLoginModelImpl.ENTITY_CACHE_ENABLED,
-						UserLoginImpl.class, userLogin.getPrimaryKey()) == null) {
+			if (entityCache.getResult(
+					UserLoginModelImpl.ENTITY_CACHE_ENABLED,
+					UserLoginImpl.class, userLogin.getPrimaryKey()) == null) {
+
 				cacheResult(userLogin);
 			}
 			else {
@@ -120,7 +115,7 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 	 * Clears the cache for all user logins.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -136,13 +131,14 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 	 * Clears the cache for the user login.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(UserLogin userLogin) {
-		entityCache.removeResult(UserLoginModelImpl.ENTITY_CACHE_ENABLED,
-			UserLoginImpl.class, userLogin.getPrimaryKey());
+		entityCache.removeResult(
+			UserLoginModelImpl.ENTITY_CACHE_ENABLED, UserLoginImpl.class,
+			userLogin.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -154,8 +150,9 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (UserLogin userLogin : userLogins) {
-			entityCache.removeResult(UserLoginModelImpl.ENTITY_CACHE_ENABLED,
-				UserLoginImpl.class, userLogin.getPrimaryKey());
+			entityCache.removeResult(
+				UserLoginModelImpl.ENTITY_CACHE_ENABLED, UserLoginImpl.class,
+				userLogin.getPrimaryKey());
 		}
 	}
 
@@ -197,21 +194,22 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 	@Override
 	public UserLogin remove(Serializable primaryKey)
 		throws NoSuchUserLoginException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			UserLogin userLogin = (UserLogin)session.get(UserLoginImpl.class,
-					primaryKey);
+			UserLogin userLogin = (UserLogin)session.get(
+				UserLoginImpl.class, primaryKey);
 
 			if (userLogin == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchUserLoginException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchUserLoginException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(userLogin);
@@ -229,16 +227,14 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 
 	@Override
 	protected UserLogin removeImpl(UserLogin userLogin) {
-		userLogin = toUnwrappedModel(userLogin);
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(userLogin)) {
-				userLogin = (UserLogin)session.get(UserLoginImpl.class,
-						userLogin.getPrimaryKeyObj());
+				userLogin = (UserLogin)session.get(
+					UserLoginImpl.class, userLogin.getPrimaryKeyObj());
 			}
 
 			if (userLogin != null) {
@@ -261,8 +257,6 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 
 	@Override
 	public UserLogin updateImpl(UserLogin userLogin) {
-		userLogin = toUnwrappedModel(userLogin);
-
 		boolean isNew = userLogin.isNew();
 
 		Session session = null;
@@ -289,38 +283,22 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
 		if (isNew) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(UserLoginModelImpl.ENTITY_CACHE_ENABLED,
-			UserLoginImpl.class, userLogin.getPrimaryKey(), userLogin, false);
+		entityCache.putResult(
+			UserLoginModelImpl.ENTITY_CACHE_ENABLED, UserLoginImpl.class,
+			userLogin.getPrimaryKey(), userLogin, false);
 
 		userLogin.resetOriginalValues();
 
 		return userLogin;
 	}
 
-	protected UserLogin toUnwrappedModel(UserLogin userLogin) {
-		if (userLogin instanceof UserLoginImpl) {
-			return userLogin;
-		}
-
-		UserLoginImpl userLoginImpl = new UserLoginImpl();
-
-		userLoginImpl.setNew(userLogin.isNew());
-		userLoginImpl.setPrimaryKey(userLogin.getPrimaryKey());
-
-		userLoginImpl.setUserId(userLogin.getUserId());
-		userLoginImpl.setLastLogin(userLogin.getLastLogin());
-		userLoginImpl.setTotalLogins(userLogin.getTotalLogins());
-		userLoginImpl.setLongestTimeBetweenLogins(userLogin.getLongestTimeBetweenLogins());
-		userLoginImpl.setShortestTimeBetweenLogins(userLogin.getShortestTimeBetweenLogins());
-
-		return userLoginImpl;
-	}
-
 	/**
-	 * Returns the user login with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the user login with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the user login
 	 * @return the user login
@@ -329,6 +307,7 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 	@Override
 	public UserLogin findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchUserLoginException {
+
 		UserLogin userLogin = fetchByPrimaryKey(primaryKey);
 
 		if (userLogin == null) {
@@ -336,15 +315,15 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchUserLoginException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchUserLoginException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return userLogin;
 	}
 
 	/**
-	 * Returns the user login with the primary key or throws a {@link NoSuchUserLoginException} if it could not be found.
+	 * Returns the user login with the primary key or throws a <code>NoSuchUserLoginException</code> if it could not be found.
 	 *
 	 * @param userId the primary key of the user login
 	 * @return the user login
@@ -353,6 +332,7 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 	@Override
 	public UserLogin findByPrimaryKey(long userId)
 		throws NoSuchUserLoginException {
+
 		return findByPrimaryKey((Serializable)userId);
 	}
 
@@ -364,8 +344,9 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 	 */
 	@Override
 	public UserLogin fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(UserLoginModelImpl.ENTITY_CACHE_ENABLED,
-				UserLoginImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			UserLoginModelImpl.ENTITY_CACHE_ENABLED, UserLoginImpl.class,
+			primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -379,19 +360,21 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 			try {
 				session = openSession();
 
-				userLogin = (UserLogin)session.get(UserLoginImpl.class,
-						primaryKey);
+				userLogin = (UserLogin)session.get(
+					UserLoginImpl.class, primaryKey);
 
 				if (userLogin != null) {
 					cacheResult(userLogin);
 				}
 				else {
-					entityCache.putResult(UserLoginModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(
+						UserLoginModelImpl.ENTITY_CACHE_ENABLED,
 						UserLoginImpl.class, primaryKey, nullModel);
 				}
 			}
 			catch (Exception e) {
-				entityCache.removeResult(UserLoginModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.removeResult(
+					UserLoginModelImpl.ENTITY_CACHE_ENABLED,
 					UserLoginImpl.class, primaryKey);
 
 				throw processException(e);
@@ -418,11 +401,13 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 	@Override
 	public Map<Serializable, UserLogin> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, UserLogin> map = new HashMap<Serializable, UserLogin>();
+		Map<Serializable, UserLogin> map =
+			new HashMap<Serializable, UserLogin>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -441,8 +426,9 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(UserLoginModelImpl.ENTITY_CACHE_ENABLED,
-					UserLoginImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				UserLoginModelImpl.ENTITY_CACHE_ENABLED, UserLoginImpl.class,
+				primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -462,20 +448,20 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler query = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
 		query.append(_SQL_SELECT_USERLOGIN_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append(String.valueOf(primaryKey));
+			query.append((long)primaryKey);
 
-			query.append(StringPool.COMMA);
+			query.append(",");
 		}
 
 		query.setIndex(query.index() - 1);
 
-		query.append(StringPool.CLOSE_PARENTHESIS);
+		query.append(")");
 
 		String sql = query.toString();
 
@@ -495,7 +481,8 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(UserLoginModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					UserLoginModelImpl.ENTITY_CACHE_ENABLED,
 					UserLoginImpl.class, primaryKey, nullModel);
 			}
 		}
@@ -523,7 +510,7 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 	 * Returns a range of all the user logins.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserLoginModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>UserLoginModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of user logins
@@ -539,7 +526,7 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 	 * Returns an ordered range of all the user logins.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserLoginModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>UserLoginModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of user logins
@@ -548,8 +535,9 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 	 * @return the ordered range of user logins
 	 */
 	@Override
-	public List<UserLogin> findAll(int start, int end,
-		OrderByComparator<UserLogin> orderByComparator) {
+	public List<UserLogin> findAll(
+		int start, int end, OrderByComparator<UserLogin> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -557,39 +545,41 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 	 * Returns an ordered range of all the user logins.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link UserLoginModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>UserLoginModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of user logins
 	 * @param end the upper bound of the range of user logins (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of user logins
 	 */
 	@Override
-	public List<UserLogin> findAll(int start, int end,
-		OrderByComparator<UserLogin> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
+	public List<UserLogin> findAll(
+		int start, int end, OrderByComparator<UserLogin> orderByComparator,
+		boolean useFinderCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-			finderArgs = FINDER_ARGS_EMPTY;
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindAll;
+				finderArgs = FINDER_ARGS_EMPTY;
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-			finderArgs = new Object[] { start, end, orderByComparator };
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindAll;
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<UserLogin> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<UserLogin>)finderCache.getResult(finderPath,
-					finderArgs, this);
+		if (useFinderCache) {
+			list = (List<UserLogin>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
@@ -597,22 +587,20 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
 				query.append(_SQL_SELECT_USERLOGIN);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
 				sql = query.toString();
 			}
 			else {
 				sql = _SQL_SELECT_USERLOGIN;
 
-				if (pagination) {
-					sql = sql.concat(UserLoginModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(UserLoginModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -622,25 +610,19 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<UserLogin>)QueryUtil.list(q, getDialect(),
-							start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<UserLogin>)QueryUtil.list(q, getDialect(),
-							start, end);
-				}
+				list = (List<UserLogin>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
 				throw processException(e);
 			}
@@ -670,8 +652,8 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -683,12 +665,12 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
-					FINDER_ARGS_EMPTY);
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
 				throw processException(e);
 			}
@@ -709,6 +691,22 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 	 * Initializes the user login persistence.
 	 */
 	public void afterPropertiesSet() {
+		_finderPathWithPaginationFindAll = new FinderPath(
+			UserLoginModelImpl.ENTITY_CACHE_ENABLED,
+			UserLoginModelImpl.FINDER_CACHE_ENABLED, UserLoginImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			UserLoginModelImpl.ENTITY_CACHE_ENABLED,
+			UserLoginModelImpl.FINDER_CACHE_ENABLED, UserLoginImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+			new String[0]);
+
+		_finderPathCountAll = new FinderPath(
+			UserLoginModelImpl.ENTITY_CACHE_ENABLED,
+			UserLoginModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
 	}
 
 	public void destroy() {
@@ -720,12 +718,25 @@ public class UserLoginPersistenceImpl extends BasePersistenceImpl<UserLogin>
 
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-	private static final String _SQL_SELECT_USERLOGIN = "SELECT userLogin FROM UserLogin userLogin";
-	private static final String _SQL_SELECT_USERLOGIN_WHERE_PKS_IN = "SELECT userLogin FROM UserLogin userLogin WHERE userId IN (";
-	private static final String _SQL_COUNT_USERLOGIN = "SELECT COUNT(userLogin) FROM UserLogin userLogin";
+
+	private static final String _SQL_SELECT_USERLOGIN =
+		"SELECT userLogin FROM UserLogin userLogin";
+
+	private static final String _SQL_SELECT_USERLOGIN_WHERE_PKS_IN =
+		"SELECT userLogin FROM UserLogin userLogin WHERE userId IN (";
+
+	private static final String _SQL_COUNT_USERLOGIN =
+		"SELECT COUNT(userLogin) FROM UserLogin userLogin";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "userLogin.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No UserLogin exists with the primary key ";
-	private static final Log _log = LogFactoryUtil.getLog(UserLoginPersistenceImpl.class);
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No UserLogin exists with the primary key ";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UserLoginPersistenceImpl.class);
+
 }

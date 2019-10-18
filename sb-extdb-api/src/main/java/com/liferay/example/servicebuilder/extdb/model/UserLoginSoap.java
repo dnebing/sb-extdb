@@ -14,8 +14,6 @@
 
 package com.liferay.example.servicebuilder.extdb.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -28,16 +26,18 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class UserLoginSoap implements Serializable {
+
 	public static UserLoginSoap toSoapModel(UserLogin model) {
 		UserLoginSoap soapModel = new UserLoginSoap();
 
 		soapModel.setUserId(model.getUserId());
 		soapModel.setLastLogin(model.getLastLogin());
 		soapModel.setTotalLogins(model.getTotalLogins());
-		soapModel.setLongestTimeBetweenLogins(model.getLongestTimeBetweenLogins());
-		soapModel.setShortestTimeBetweenLogins(model.getShortestTimeBetweenLogins());
+		soapModel.setLongestTimeBetweenLogins(
+			model.getLongestTimeBetweenLogins());
+		soapModel.setShortestTimeBetweenLogins(
+			model.getShortestTimeBetweenLogins());
 
 		return soapModel;
 	}
@@ -70,7 +70,8 @@ public class UserLoginSoap implements Serializable {
 	}
 
 	public static UserLoginSoap[] toSoapModels(List<UserLogin> models) {
-		List<UserLoginSoap> soapModels = new ArrayList<UserLoginSoap>(models.size());
+		List<UserLoginSoap> soapModels = new ArrayList<UserLoginSoap>(
+			models.size());
 
 		for (UserLogin model : models) {
 			soapModels.add(toSoapModel(model));
@@ -135,4 +136,5 @@ public class UserLoginSoap implements Serializable {
 	private long _totalLogins;
 	private long _longestTimeBetweenLogins;
 	private long _shortestTimeBetweenLogins;
+
 }

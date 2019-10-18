@@ -15,13 +15,11 @@
 package com.liferay.example.servicebuilder.extdb.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-
 import com.liferay.example.servicebuilder.extdb.exception.NoSuchUserLoginException;
 import com.liferay.example.servicebuilder.extdb.model.UserLogin;
 import com.liferay.example.servicebuilder.extdb.service.UserLoginLocalServiceUtil;
 import com.liferay.example.servicebuilder.extdb.service.persistence.UserLoginPersistence;
 import com.liferay.example.servicebuilder.extdb.service.persistence.UserLoginUtil;
-
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -29,7 +27,6 @@ import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
@@ -38,15 +35,7 @@ import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
-
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-
-import org.junit.runner.RunWith;
+import com.liferay.portal.test.rule.TransactionalTestRule;
 
 import java.io.Serializable;
 
@@ -57,16 +46,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 /**
  * @generated
  */
 @RunWith(Arquillian.class)
 public class UserLoginPersistenceTest {
+
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
-			PersistenceTestRule.INSTANCE,
-			new TransactionalTestRule(Propagation.REQUIRED));
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
+			new TransactionalTestRule(
+				Propagation.REQUIRED,
+				"com.liferay.example.servicebuilder.extdb.service"));
 
 	@Before
 	public void setUp() {
@@ -105,7 +106,8 @@ public class UserLoginPersistenceTest {
 
 		_persistence.remove(newUserLogin);
 
-		UserLogin existingUserLogin = _persistence.fetchByPrimaryKey(newUserLogin.getPrimaryKey());
+		UserLogin existingUserLogin = _persistence.fetchByPrimaryKey(
+			newUserLogin.getPrimaryKey());
 
 		Assert.assertNull(existingUserLogin);
 	}
@@ -131,18 +133,21 @@ public class UserLoginPersistenceTest {
 
 		_userLogins.add(_persistence.update(newUserLogin));
 
-		UserLogin existingUserLogin = _persistence.findByPrimaryKey(newUserLogin.getPrimaryKey());
+		UserLogin existingUserLogin = _persistence.findByPrimaryKey(
+			newUserLogin.getPrimaryKey());
 
-		Assert.assertEquals(existingUserLogin.getUserId(),
-			newUserLogin.getUserId());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingUserLogin.getLastLogin()),
+		Assert.assertEquals(
+			existingUserLogin.getUserId(), newUserLogin.getUserId());
+		Assert.assertEquals(
+			Time.getShortTimestamp(existingUserLogin.getLastLogin()),
 			Time.getShortTimestamp(newUserLogin.getLastLogin()));
-		Assert.assertEquals(existingUserLogin.getTotalLogins(),
-			newUserLogin.getTotalLogins());
-		Assert.assertEquals(existingUserLogin.getLongestTimeBetweenLogins(),
+		Assert.assertEquals(
+			existingUserLogin.getTotalLogins(), newUserLogin.getTotalLogins());
+		Assert.assertEquals(
+			existingUserLogin.getLongestTimeBetweenLogins(),
 			newUserLogin.getLongestTimeBetweenLogins());
-		Assert.assertEquals(existingUserLogin.getShortestTimeBetweenLogins(),
+		Assert.assertEquals(
+			existingUserLogin.getShortestTimeBetweenLogins(),
 			newUserLogin.getShortestTimeBetweenLogins());
 	}
 
@@ -150,7 +155,8 @@ public class UserLoginPersistenceTest {
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		UserLogin newUserLogin = addUserLogin();
 
-		UserLogin existingUserLogin = _persistence.findByPrimaryKey(newUserLogin.getPrimaryKey());
+		UserLogin existingUserLogin = _persistence.findByPrimaryKey(
+			newUserLogin.getPrimaryKey());
 
 		Assert.assertEquals(existingUserLogin, newUserLogin);
 	}
@@ -164,21 +170,23 @@ public class UserLoginPersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			getOrderByComparator());
+		_persistence.findAll(
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
 	}
 
 	protected OrderByComparator<UserLogin> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create("ExtDB_UserLogin", "userId",
-			true, "lastLogin", true, "totalLogins", true,
-			"longestTimeBetweenLogins", true, "shortestTimeBetweenLogins", true);
+		return OrderByComparatorFactoryUtil.create(
+			"ExtDB_UserLogin", "userId", true, "lastLogin", true, "totalLogins",
+			true, "longestTimeBetweenLogins", true, "shortestTimeBetweenLogins",
+			true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		UserLogin newUserLogin = addUserLogin();
 
-		UserLogin existingUserLogin = _persistence.fetchByPrimaryKey(newUserLogin.getPrimaryKey());
+		UserLogin existingUserLogin = _persistence.fetchByPrimaryKey(
+			newUserLogin.getPrimaryKey());
 
 		Assert.assertEquals(existingUserLogin, newUserLogin);
 	}
@@ -195,6 +203,7 @@ public class UserLoginPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
+
 		UserLogin newUserLogin1 = addUserLogin();
 		UserLogin newUserLogin2 = addUserLogin();
 
@@ -203,18 +212,20 @@ public class UserLoginPersistenceTest {
 		primaryKeys.add(newUserLogin1.getPrimaryKey());
 		primaryKeys.add(newUserLogin2.getPrimaryKey());
 
-		Map<Serializable, UserLogin> userLogins = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, UserLogin> userLogins =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(2, userLogins.size());
-		Assert.assertEquals(newUserLogin1,
-			userLogins.get(newUserLogin1.getPrimaryKey()));
-		Assert.assertEquals(newUserLogin2,
-			userLogins.get(newUserLogin2.getPrimaryKey()));
+		Assert.assertEquals(
+			newUserLogin1, userLogins.get(newUserLogin1.getPrimaryKey()));
+		Assert.assertEquals(
+			newUserLogin2, userLogins.get(newUserLogin2.getPrimaryKey()));
 	}
 
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
+
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -224,7 +235,8 @@ public class UserLoginPersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, UserLogin> userLogins = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, UserLogin> userLogins =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(userLogins.isEmpty());
 	}
@@ -232,6 +244,7 @@ public class UserLoginPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
+
 		UserLogin newUserLogin = addUserLogin();
 
 		long pk = RandomTestUtil.nextLong();
@@ -241,52 +254,57 @@ public class UserLoginPersistenceTest {
 		primaryKeys.add(newUserLogin.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, UserLogin> userLogins = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, UserLogin> userLogins =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, userLogins.size());
-		Assert.assertEquals(newUserLogin,
-			userLogins.get(newUserLogin.getPrimaryKey()));
+		Assert.assertEquals(
+			newUserLogin, userLogins.get(newUserLogin.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, UserLogin> userLogins = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, UserLogin> userLogins =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(userLogins.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
 		UserLogin newUserLogin = addUserLogin();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newUserLogin.getPrimaryKey());
 
-		Map<Serializable, UserLogin> userLogins = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, UserLogin> userLogins =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, userLogins.size());
-		Assert.assertEquals(newUserLogin,
-			userLogins.get(newUserLogin.getPrimaryKey()));
+		Assert.assertEquals(
+			newUserLogin, userLogins.get(newUserLogin.getPrimaryKey()));
 	}
 
 	@Test
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery = UserLoginLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery =
+			UserLoginLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<UserLogin>() {
+		actionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<UserLogin>() {
+
 				@Override
 				public void performAction(UserLogin userLogin) {
 					Assert.assertNotNull(userLogin);
 
 					count.increment();
 				}
+
 			});
 
 		actionableDynamicQuery.performActions();
@@ -295,17 +313,17 @@ public class UserLoginPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting()
-		throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
 		UserLogin newUserLogin = addUserLogin();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(UserLogin.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			UserLogin.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("userId",
-				newUserLogin.getUserId()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("userId", newUserLogin.getUserId()));
 
-		List<UserLogin> result = _persistence.findWithDynamicQuery(dynamicQuery);
+		List<UserLogin> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
 
 		Assert.assertEquals(1, result.size());
 
@@ -316,31 +334,31 @@ public class UserLoginPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(UserLogin.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			UserLogin.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("userId",
-				RandomTestUtil.nextLong()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("userId", RandomTestUtil.nextLong()));
 
-		List<UserLogin> result = _persistence.findWithDynamicQuery(dynamicQuery);
+		List<UserLogin> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
 
 		Assert.assertEquals(0, result.size());
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting()
-		throws Exception {
+	public void testDynamicQueryByProjectionExisting() throws Exception {
 		UserLogin newUserLogin = addUserLogin();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(UserLogin.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			UserLogin.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.setProjection(ProjectionFactoryUtil.property("userId"));
 
 		Object newUserId = newUserLogin.getUserId();
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("userId",
-				new Object[] { newUserId }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in("userId", new Object[] {newUserId}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -353,13 +371,14 @@ public class UserLoginPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(UserLogin.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			UserLogin.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.setProjection(ProjectionFactoryUtil.property("userId"));
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("userId",
-				new Object[] { RandomTestUtil.nextLong() }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"userId", new Object[] {RandomTestUtil.nextLong()}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -387,4 +406,5 @@ public class UserLoginPersistenceTest {
 	private List<UserLogin> _userLogins = new ArrayList<UserLogin>();
 	private UserLoginPersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
+
 }

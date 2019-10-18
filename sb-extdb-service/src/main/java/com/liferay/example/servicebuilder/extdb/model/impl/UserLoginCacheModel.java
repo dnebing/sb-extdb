@@ -14,10 +14,7 @@
 
 package com.liferay.example.servicebuilder.extdb.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.example.servicebuilder.extdb.model.UserLogin;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -33,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing UserLogin in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see UserLogin
  * @generated
  */
-@ProviderType
-public class UserLoginCacheModel implements CacheModel<UserLogin>,
-	Externalizable {
+public class UserLoginCacheModel
+	implements CacheModel<UserLogin>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -117,8 +113,7 @@ public class UserLoginCacheModel implements CacheModel<UserLogin>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(userId);
 		objectOutput.writeLong(lastLogin);
 
@@ -134,4 +129,5 @@ public class UserLoginCacheModel implements CacheModel<UserLogin>,
 	public long totalLogins;
 	public long longestTimeBetweenLogins;
 	public long shortestTimeBetweenLogins;
+
 }

@@ -25,19 +25,22 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see UserLoginModel
- * @see com.liferay.example.servicebuilder.extdb.model.impl.UserLoginImpl
- * @see com.liferay.example.servicebuilder.extdb.model.impl.UserLoginModelImpl
  * @generated
  */
-@ImplementationClassName("com.liferay.example.servicebuilder.extdb.model.impl.UserLoginImpl")
+@ImplementationClassName(
+	"com.liferay.example.servicebuilder.extdb.model.impl.UserLoginImpl"
+)
 @ProviderType
-public interface UserLogin extends UserLoginModel, PersistedModel {
-	/*
+public interface UserLogin extends PersistedModel, UserLoginModel {
+
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.example.servicebuilder.extdb.model.impl.UserLoginImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.example.servicebuilder.extdb.model.impl.UserLoginImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<UserLogin, Long> USER_ID_ACCESSOR = new Accessor<UserLogin, Long>() {
+	public static final Accessor<UserLogin, Long> USER_ID_ACCESSOR =
+		new Accessor<UserLogin, Long>() {
+
 			@Override
 			public Long get(UserLogin userLogin) {
 				return userLogin.getUserId();
@@ -52,5 +55,7 @@ public interface UserLogin extends UserLoginModel, PersistedModel {
 			public Class<UserLogin> getTypeClass() {
 				return UserLogin.class;
 			}
+
 		};
+
 }

@@ -21,7 +21,6 @@ import com.liferay.example.servicebuilder.extdb.service.base.UserLoginLocalServi
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
 
@@ -53,6 +52,7 @@ public class UserLoginLocalServiceImpl extends UserLoginLocalServiceBaseImpl {
 	public void updateUserLogin(
 		final String userUUID, final Date loginDate, final String screenName,
 		final String systemName) {
+
 		UserLogin login = null;
 
 		// first try to get the existing record for the user
@@ -67,7 +67,7 @@ public class UserLoginLocalServiceImpl extends UserLoginLocalServiceBaseImpl {
 			}
 		}
 
-		if (Validator.isNull(login)) {
+		if (login == null) {
 
 			// user has never logged in before, need a new record
 
@@ -102,7 +102,7 @@ public class UserLoginLocalServiceImpl extends UserLoginLocalServiceBaseImpl {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					"User " + userUUID +
-					" has logged in before, updating the record.");
+						" has logged in before, updating the record.");
 			}
 
 			// increment the logins count
@@ -113,8 +113,8 @@ public class UserLoginLocalServiceImpl extends UserLoginLocalServiceBaseImpl {
 
 			long duration =
 				loginDate.getTime() -
-				login.getLastLogin(
-				).getTime();
+					login.getLastLogin(
+					).getTime();
 
 			// if this duration is longer than last, update the longest duration.
 

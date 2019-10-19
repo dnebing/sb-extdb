@@ -9,11 +9,9 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.util.Date;
 
-import com.liferay.portal.kernel.util.Validator;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
@@ -54,11 +52,10 @@ public class UserLoginTrackerAction implements LifecycleAction {
 			}
 		}
 
-		if (Validator.isNull(user)) {
+		if (user == null) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					"Could not find the logged in user, nothing to track.");
-
 			}
 
 			return;
@@ -69,17 +66,19 @@ public class UserLoginTrackerAction implements LifecycleAction {
 		}
 
 		// we have the user, let's invoke the service
+
 		_userLoginLocalService.updateUserLogin(
 			user.getUserUuid(), new Date(), user.getScreenName(),
 			user.getLoginIP());
 	}
 
-	@Reference(policyOption = ReferencePolicyOption.GREEDY)
-	private UserLoginLocalService _userLoginLocalService;
+	private static final Log _log = LogFactoryUtil.getLog(
+		UserLoginTrackerAction.class);
 
 	@Reference
 	private Portal _portal;
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		UserLoginTrackerAction.class);
+	@Reference(policyOption = ReferencePolicyOption.GREEDY)
+	private UserLoginLocalService _userLoginLocalService;
+
 }

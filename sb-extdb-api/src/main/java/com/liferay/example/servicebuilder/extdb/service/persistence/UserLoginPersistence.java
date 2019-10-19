@@ -65,39 +65,39 @@ public interface UserLoginPersistence extends BasePersistence<UserLogin> {
 	/**
 	 * Creates a new user login with the primary key. Does not add the user login to the database.
 	 *
-	 * @param userId the primary key for the new user login
+	 * @param uuid the primary key for the new user login
 	 * @return the new user login
 	 */
-	public UserLogin create(long userId);
+	public UserLogin create(String uuid);
 
 	/**
 	 * Removes the user login with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
-	 * @param userId the primary key of the user login
+	 * @param uuid the primary key of the user login
 	 * @return the user login that was removed
 	 * @throws NoSuchUserLoginException if a user login with the primary key could not be found
 	 */
-	public UserLogin remove(long userId) throws NoSuchUserLoginException;
+	public UserLogin remove(String uuid) throws NoSuchUserLoginException;
 
 	public UserLogin updateImpl(UserLogin userLogin);
 
 	/**
 	 * Returns the user login with the primary key or throws a <code>NoSuchUserLoginException</code> if it could not be found.
 	 *
-	 * @param userId the primary key of the user login
+	 * @param uuid the primary key of the user login
 	 * @return the user login
 	 * @throws NoSuchUserLoginException if a user login with the primary key could not be found
 	 */
-	public UserLogin findByPrimaryKey(long userId)
+	public UserLogin findByPrimaryKey(String uuid)
 		throws NoSuchUserLoginException;
 
 	/**
 	 * Returns the user login with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param userId the primary key of the user login
+	 * @param uuid the primary key of the user login
 	 * @return the user login, or <code>null</code> if a user login with the primary key could not be found
 	 */
-	public UserLogin fetchByPrimaryKey(long userId);
+	public UserLogin fetchByPrimaryKey(String uuid);
 
 	/**
 	 * Returns all the user logins.
@@ -166,5 +166,8 @@ public interface UserLoginPersistence extends BasePersistence<UserLogin> {
 	 * @return the number of user logins
 	 */
 	public int countAll();
+
+	@Override
+	public Set<String> getBadColumnNames();
 
 }

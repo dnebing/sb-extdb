@@ -38,17 +38,17 @@ public interface UserLogin extends PersistedModel, UserLoginModel {
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.example.servicebuilder.extdb.model.impl.UserLoginImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<UserLogin, Long> USER_ID_ACCESSOR =
-		new Accessor<UserLogin, Long>() {
+	public static final Accessor<UserLogin, String> UUID_ACCESSOR =
+		new Accessor<UserLogin, String>() {
 
 			@Override
-			public Long get(UserLogin userLogin) {
-				return userLogin.getUserId();
+			public String get(UserLogin userLogin) {
+				return userLogin.getUuid();
 			}
 
 			@Override
-			public Class<Long> getAttributeClass() {
-				return Long.class;
+			public Class<String> getAttributeClass() {
+				return String.class;
 			}
 
 			@Override

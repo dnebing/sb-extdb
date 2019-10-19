@@ -16,16 +16,10 @@ package com.liferay.example.servicebuilder.extdb.model.impl;
 
 import com.liferay.example.servicebuilder.extdb.model.UserLogin;
 import com.liferay.example.servicebuilder.extdb.model.UserLoginModel;
-import com.liferay.expando.kernel.model.ExpandoBridge;
-import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
-import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -67,7 +61,8 @@ public class UserLoginModelImpl
 	public static final String TABLE_NAME = "ExtDB_UserLogin";
 
 	public static final Object[][] TABLE_COLUMNS = {
-		{"userId", Types.BIGINT}, {"lastLogin", Types.TIMESTAMP},
+		{"uuid_", Types.VARCHAR}, {"screenName", Types.VARCHAR},
+		{"systemName", Types.VARCHAR}, {"lastLogin", Types.TIMESTAMP},
 		{"totalLogins", Types.BIGINT},
 		{"longestTimeBetweenLogins", Types.BIGINT},
 		{"shortestTimeBetweenLogins", Types.BIGINT}
@@ -77,7 +72,9 @@ public class UserLoginModelImpl
 		new HashMap<String, Integer>();
 
 	static {
-		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("uuid_", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("screenName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("systemName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("lastLogin", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("totalLogins", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("longestTimeBetweenLogins", Types.BIGINT);
@@ -85,14 +82,14 @@ public class UserLoginModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table ExtDB_UserLogin (userId LONG not null primary key,lastLogin DATE null,totalLogins LONG,longestTimeBetweenLogins LONG,shortestTimeBetweenLogins LONG)";
+		"create table ExtDB_UserLogin (uuid_ VARCHAR(75) not null primary key,screenName VARCHAR(75) null,systemName VARCHAR(75) null,lastLogin DATE null,totalLogins LONG,longestTimeBetweenLogins LONG,shortestTimeBetweenLogins LONG)";
 
 	public static final String TABLE_SQL_DROP = "drop table ExtDB_UserLogin";
 
-	public static final String ORDER_BY_JPQL = " ORDER BY userLogin.userId ASC";
+	public static final String ORDER_BY_JPQL = " ORDER BY userLogin.uuid ASC";
 
 	public static final String ORDER_BY_SQL =
-		" ORDER BY ExtDB_UserLogin.userId ASC";
+		" ORDER BY ExtDB_UserLogin.uuid_ ASC";
 
 	public static final String DATA_SOURCE = "extDataSource";
 
@@ -120,23 +117,23 @@ public class UserLoginModelImpl
 	}
 
 	@Override
-	public long getPrimaryKey() {
-		return _userId;
+	public String getPrimaryKey() {
+		return _uuid;
 	}
 
 	@Override
-	public void setPrimaryKey(long primaryKey) {
-		setUserId(primaryKey);
+	public void setPrimaryKey(String primaryKey) {
+		setUuid(primaryKey);
 	}
 
 	@Override
 	public Serializable getPrimaryKeyObj() {
-		return _userId;
+		return _uuid;
 	}
 
 	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-		setPrimaryKey(((Long)primaryKeyObj).longValue());
+		setPrimaryKey((String)primaryKeyObj);
 	}
 
 	@Override
@@ -241,22 +238,66 @@ public class UserLoginModelImpl
 			new LinkedHashMap<String, BiConsumer<UserLogin, ?>>();
 
 		attributeGetterFunctions.put(
-			"userId",
+			"uuid",
 			new Function<UserLogin, Object>() {
 
 				@Override
 				public Object apply(UserLogin userLogin) {
-					return userLogin.getUserId();
+					return userLogin.getUuid();
 				}
 
 			});
 		attributeSetterBiConsumers.put(
-			"userId",
+			"uuid",
 			new BiConsumer<UserLogin, Object>() {
 
 				@Override
-				public void accept(UserLogin userLogin, Object userIdObject) {
-					userLogin.setUserId((Long)userIdObject);
+				public void accept(UserLogin userLogin, Object uuidObject) {
+					userLogin.setUuid((String)uuidObject);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"screenName",
+			new Function<UserLogin, Object>() {
+
+				@Override
+				public Object apply(UserLogin userLogin) {
+					return userLogin.getScreenName();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"screenName",
+			new BiConsumer<UserLogin, Object>() {
+
+				@Override
+				public void accept(
+					UserLogin userLogin, Object screenNameObject) {
+
+					userLogin.setScreenName((String)screenNameObject);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"systemName",
+			new Function<UserLogin, Object>() {
+
+				@Override
+				public Object apply(UserLogin userLogin) {
+					return userLogin.getSystemName();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"systemName",
+			new BiConsumer<UserLogin, Object>() {
+
+				@Override
+				public void accept(
+					UserLogin userLogin, Object systemNameObject) {
+
+					userLogin.setSystemName((String)systemNameObject);
 				}
 
 			});
@@ -360,29 +401,48 @@ public class UserLoginModelImpl
 	}
 
 	@Override
-	public long getUserId() {
-		return _userId;
-	}
-
-	@Override
-	public void setUserId(long userId) {
-		_userId = userId;
-	}
-
-	@Override
-	public String getUserUuid() {
-		try {
-			User user = UserLocalServiceUtil.getUserById(getUserId());
-
-			return user.getUuid();
-		}
-		catch (PortalException pe) {
+	public String getUuid() {
+		if (_uuid == null) {
 			return "";
 		}
+		else {
+			return _uuid;
+		}
 	}
 
 	@Override
-	public void setUserUuid(String userUuid) {
+	public void setUuid(String uuid) {
+		_uuid = uuid;
+	}
+
+	@Override
+	public String getScreenName() {
+		if (_screenName == null) {
+			return "";
+		}
+		else {
+			return _screenName;
+		}
+	}
+
+	@Override
+	public void setScreenName(String screenName) {
+		_screenName = screenName;
+	}
+
+	@Override
+	public String getSystemName() {
+		if (_systemName == null) {
+			return "";
+		}
+		else {
+			return _systemName;
+		}
+	}
+
+	@Override
+	public void setSystemName(String systemName) {
+		_systemName = systemName;
 	}
 
 	@Override
@@ -426,19 +486,6 @@ public class UserLoginModelImpl
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(
-			0, UserLogin.class.getName(), getPrimaryKey());
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-		ExpandoBridge expandoBridge = getExpandoBridge();
-
-		expandoBridge.setAttributes(serviceContext);
-	}
-
-	@Override
 	public UserLogin toEscapedModel() {
 		if (_escapedModel == null) {
 			Function<InvocationHandler, UserLogin>
@@ -457,7 +504,9 @@ public class UserLoginModelImpl
 	public Object clone() {
 		UserLoginImpl userLoginImpl = new UserLoginImpl();
 
-		userLoginImpl.setUserId(getUserId());
+		userLoginImpl.setUuid(getUuid());
+		userLoginImpl.setScreenName(getScreenName());
+		userLoginImpl.setSystemName(getSystemName());
 		userLoginImpl.setLastLogin(getLastLogin());
 		userLoginImpl.setTotalLogins(getTotalLogins());
 		userLoginImpl.setLongestTimeBetweenLogins(
@@ -472,17 +521,9 @@ public class UserLoginModelImpl
 
 	@Override
 	public int compareTo(UserLogin userLogin) {
-		long primaryKey = userLogin.getPrimaryKey();
+		String primaryKey = userLogin.getPrimaryKey();
 
-		if (getPrimaryKey() < primaryKey) {
-			return -1;
-		}
-		else if (getPrimaryKey() > primaryKey) {
-			return 1;
-		}
-		else {
-			return 0;
-		}
+		return getPrimaryKey().compareTo(primaryKey);
 	}
 
 	@Override
@@ -497,9 +538,9 @@ public class UserLoginModelImpl
 
 		UserLogin userLogin = (UserLogin)obj;
 
-		long primaryKey = userLogin.getPrimaryKey();
+		String primaryKey = userLogin.getPrimaryKey();
 
-		if (getPrimaryKey() == primaryKey) {
+		if (getPrimaryKey().equals(primaryKey)) {
 			return true;
 		}
 		else {
@@ -509,7 +550,7 @@ public class UserLoginModelImpl
 
 	@Override
 	public int hashCode() {
-		return (int)getPrimaryKey();
+		return getPrimaryKey().hashCode();
 	}
 
 	@Override
@@ -530,7 +571,29 @@ public class UserLoginModelImpl
 	public CacheModel<UserLogin> toCacheModel() {
 		UserLoginCacheModel userLoginCacheModel = new UserLoginCacheModel();
 
-		userLoginCacheModel.userId = getUserId();
+		userLoginCacheModel.uuid = getUuid();
+
+		String uuid = userLoginCacheModel.uuid;
+
+		if ((uuid != null) && (uuid.length() == 0)) {
+			userLoginCacheModel.uuid = null;
+		}
+
+		userLoginCacheModel.screenName = getScreenName();
+
+		String screenName = userLoginCacheModel.screenName;
+
+		if ((screenName != null) && (screenName.length() == 0)) {
+			userLoginCacheModel.screenName = null;
+		}
+
+		userLoginCacheModel.systemName = getSystemName();
+
+		String systemName = userLoginCacheModel.systemName;
+
+		if ((systemName != null) && (systemName.length() == 0)) {
+			userLoginCacheModel.systemName = null;
+		}
 
 		Date lastLogin = getLastLogin();
 
@@ -622,7 +685,9 @@ public class UserLoginModelImpl
 
 	}
 
-	private long _userId;
+	private String _uuid;
+	private String _screenName;
+	private String _systemName;
 	private Date _lastLogin;
 	private long _totalLogins;
 	private long _longestTimeBetweenLogins;

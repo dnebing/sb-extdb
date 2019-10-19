@@ -144,25 +144,25 @@ public class UserLoginUtil {
 	/**
 	 * Creates a new user login with the primary key. Does not add the user login to the database.
 	 *
-	 * @param userId the primary key for the new user login
+	 * @param uuid the primary key for the new user login
 	 * @return the new user login
 	 */
-	public static UserLogin create(long userId) {
-		return getPersistence().create(userId);
+	public static UserLogin create(String uuid) {
+		return getPersistence().create(uuid);
 	}
 
 	/**
 	 * Removes the user login with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
-	 * @param userId the primary key of the user login
+	 * @param uuid the primary key of the user login
 	 * @return the user login that was removed
 	 * @throws NoSuchUserLoginException if a user login with the primary key could not be found
 	 */
-	public static UserLogin remove(long userId)
+	public static UserLogin remove(String uuid)
 		throws com.liferay.example.servicebuilder.extdb.exception.
 			NoSuchUserLoginException {
 
-		return getPersistence().remove(userId);
+		return getPersistence().remove(uuid);
 	}
 
 	public static UserLogin updateImpl(UserLogin userLogin) {
@@ -172,25 +172,25 @@ public class UserLoginUtil {
 	/**
 	 * Returns the user login with the primary key or throws a <code>NoSuchUserLoginException</code> if it could not be found.
 	 *
-	 * @param userId the primary key of the user login
+	 * @param uuid the primary key of the user login
 	 * @return the user login
 	 * @throws NoSuchUserLoginException if a user login with the primary key could not be found
 	 */
-	public static UserLogin findByPrimaryKey(long userId)
+	public static UserLogin findByPrimaryKey(String uuid)
 		throws com.liferay.example.servicebuilder.extdb.exception.
 			NoSuchUserLoginException {
 
-		return getPersistence().findByPrimaryKey(userId);
+		return getPersistence().findByPrimaryKey(uuid);
 	}
 
 	/**
 	 * Returns the user login with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param userId the primary key of the user login
+	 * @param uuid the primary key of the user login
 	 * @return the user login, or <code>null</code> if a user login with the primary key could not be found
 	 */
-	public static UserLogin fetchByPrimaryKey(long userId) {
-		return getPersistence().fetchByPrimaryKey(userId);
+	public static UserLogin fetchByPrimaryKey(String uuid) {
+		return getPersistence().fetchByPrimaryKey(uuid);
 	}
 
 	/**
@@ -270,6 +270,10 @@ public class UserLoginUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static Set<String> getBadColumnNames() {
+		return getPersistence().getBadColumnNames();
 	}
 
 	public static UserLoginPersistence getPersistence() {

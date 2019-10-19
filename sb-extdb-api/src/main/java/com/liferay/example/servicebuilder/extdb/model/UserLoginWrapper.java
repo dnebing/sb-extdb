@@ -54,7 +54,9 @@ public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("userId", getUserId());
+		attributes.put("uuid", getUuid());
+		attributes.put("screenName", getScreenName());
+		attributes.put("systemName", getSystemName());
 		attributes.put("lastLogin", getLastLogin());
 		attributes.put("totalLogins", getTotalLogins());
 		attributes.put(
@@ -67,10 +69,22 @@ public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long userId = (Long)attributes.get("userId");
+		String uuid = (String)attributes.get("uuid");
 
-		if (userId != null) {
-			setUserId(userId);
+		if (uuid != null) {
+			setUuid(uuid);
+		}
+
+		String screenName = (String)attributes.get("screenName");
+
+		if (screenName != null) {
+			setScreenName(screenName);
+		}
+
+		String systemName = (String)attributes.get("systemName");
+
+		if (systemName != null) {
+			setSystemName(systemName);
 		}
 
 		Date lastLogin = (Date)attributes.get("lastLogin");
@@ -141,13 +155,23 @@ public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
 	 * @return the primary key of this user login
 	 */
 	@Override
-	public long getPrimaryKey() {
+	public String getPrimaryKey() {
 		return _userLogin.getPrimaryKey();
 	}
 
 	@Override
 	public Serializable getPrimaryKeyObj() {
 		return _userLogin.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the screen name of this user login.
+	 *
+	 * @return the screen name of this user login
+	 */
+	@Override
+	public String getScreenName() {
+		return _userLogin.getScreenName();
 	}
 
 	/**
@@ -161,6 +185,16 @@ public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
 	}
 
 	/**
+	 * Returns the system name of this user login.
+	 *
+	 * @return the system name of this user login
+	 */
+	@Override
+	public String getSystemName() {
+		return _userLogin.getSystemName();
+	}
+
+	/**
 	 * Returns the total logins of this user login.
 	 *
 	 * @return the total logins of this user login
@@ -171,23 +205,13 @@ public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
 	}
 
 	/**
-	 * Returns the user ID of this user login.
+	 * Returns the uuid of this user login.
 	 *
-	 * @return the user ID of this user login
+	 * @return the uuid of this user login
 	 */
 	@Override
-	public long getUserId() {
-		return _userLogin.getUserId();
-	}
-
-	/**
-	 * Returns the user uuid of this user login.
-	 *
-	 * @return the user uuid of this user login
-	 */
-	@Override
-	public String getUserUuid() {
-		return _userLogin.getUserUuid();
+	public String getUuid() {
+		return _userLogin.getUuid();
 	}
 
 	@Override
@@ -273,13 +297,23 @@ public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
 	 * @param primaryKey the primary key of this user login
 	 */
 	@Override
-	public void setPrimaryKey(long primaryKey) {
+	public void setPrimaryKey(String primaryKey) {
 		_userLogin.setPrimaryKey(primaryKey);
 	}
 
 	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		_userLogin.setPrimaryKeyObj(primaryKeyObj);
+	}
+
+	/**
+	 * Sets the screen name of this user login.
+	 *
+	 * @param screenName the screen name of this user login
+	 */
+	@Override
+	public void setScreenName(String screenName) {
+		_userLogin.setScreenName(screenName);
 	}
 
 	/**
@@ -293,6 +327,16 @@ public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
 	}
 
 	/**
+	 * Sets the system name of this user login.
+	 *
+	 * @param systemName the system name of this user login
+	 */
+	@Override
+	public void setSystemName(String systemName) {
+		_userLogin.setSystemName(systemName);
+	}
+
+	/**
 	 * Sets the total logins of this user login.
 	 *
 	 * @param totalLogins the total logins of this user login
@@ -303,23 +347,13 @@ public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
 	}
 
 	/**
-	 * Sets the user ID of this user login.
+	 * Sets the uuid of this user login.
 	 *
-	 * @param userId the user ID of this user login
+	 * @param uuid the uuid of this user login
 	 */
 	@Override
-	public void setUserId(long userId) {
-		_userLogin.setUserId(userId);
-	}
-
-	/**
-	 * Sets the user uuid of this user login.
-	 *
-	 * @param userUuid the user uuid of this user login
-	 */
-	@Override
-	public void setUserUuid(String userUuid) {
-		_userLogin.setUserUuid(userUuid);
+	public void setUuid(String uuid) {
+		_userLogin.setUuid(uuid);
 	}
 
 	@Override

@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
+ * <p>
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- *
+ * <p>
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -21,6 +21,7 @@ import com.liferay.example.servicebuilder.extdb.service.base.UserLoginLocalServi
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
 
@@ -43,31 +44,40 @@ public class UserLoginLocalServiceImpl extends UserLoginLocalServiceBaseImpl {
 
 	/**
 	 * updateUserLogin: Updates the user login record with the given info.
-	 * @param userId User who logged in.
+	 *
+	 * @param userUUID  User who logged in.
 	 * @param loginDate Date when the user logged in.
+	 * @param screenName Screen Name of the user
+	 * @param systemName The system name (es. Hostname or FQDN, or VirtualHost)
 	 */
-	public void updateUserLogin(final long userId, final Date loginDate) {
+	public void updateUserLogin(
+		final String userUUID, final Date loginDate, final String screenName,
+		final String systemName) {
 		UserLogin login = null;
 
 		// first try to get the existing record for the user
 
 		try {
-			login = getUserLogin(userId);
+			login = getUserLogin(userUUID);
 		}
 		catch (PortalException pe) {
-			logger.error("Error getting user login for user id " + userId, pe);
+			if (_log.isErrorEnabled()) {
+				_log.error(
+					"Error getting user login for user id " + userUUID, pe);
+			}
 		}
 
-		if (login == null) {
+		if (Validator.isNull(login)) {
 
 			// user has never logged in before, need a new record
 
-			if (logger.isDebugEnabled())
-				logger.debug("User " + userId + " has never logged in before.");
+			if (_log.isDebugEnabled()) {
+				_log.debug("User " + userUUID + " has never logged in before.");
+			}
 
 			// create a new record
 
-			login = createUserLogin(userId);
+			login = createUserLogin(userUUID);
 
 			// update the login date
 
@@ -78,6 +88,8 @@ public class UserLoginLocalServiceImpl extends UserLoginLocalServiceBaseImpl {
 			login.setTotalLogins(1);
 			login.setShortestTimeBetweenLogins(Long.MAX_VALUE);
 			login.setLongestTimeBetweenLogins(0);
+			login.setScreenName(screenName);
+			login.setSystemName(systemName);
 
 			// add the login
 
@@ -87,10 +99,11 @@ public class UserLoginLocalServiceImpl extends UserLoginLocalServiceBaseImpl {
 
 			// user has logged in before, just need to update record.
 
-			if (logger.isDebugEnabled())
-				logger.debug(
-					"User " + userId +
-						" has logged in before, updating the record.");
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"User " + userUUID +
+					" has logged in before, updating the record.");
+			}
 
 			// increment the logins count
 
@@ -100,8 +113,8 @@ public class UserLoginLocalServiceImpl extends UserLoginLocalServiceBaseImpl {
 
 			long duration =
 				loginDate.getTime() -
-					login.getLastLogin(
-					).getTime();
+				login.getLastLogin(
+				).getTime();
 
 			// if this duration is longer than last, update the longest duration.
 
@@ -121,11 +134,14 @@ public class UserLoginLocalServiceImpl extends UserLoginLocalServiceBaseImpl {
 
 			// update the record
 
+			login.setScreenName(screenName);
+			login.setSystemName(systemName);
+
 			updateUserLogin(login);
 		}
 	}
 
-	private static final Log logger = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		UserLoginLocalServiceImpl.class);
 
 }

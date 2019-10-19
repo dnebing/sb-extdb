@@ -17,9 +17,7 @@ package com.liferay.example.servicebuilder.extdb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.example.servicebuilder.extdb.model.UserLogin;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -74,11 +72,11 @@ public interface UserLoginLocalService
 	/**
 	 * Creates a new user login with the primary key. Does not add the user login to the database.
 	 *
-	 * @param userId the primary key for the new user login
+	 * @param uuid the primary key for the new user login
 	 * @return the new user login
 	 */
 	@Transactional(enabled = false)
-	public UserLogin createUserLogin(long userId);
+	public UserLogin createUserLogin(String uuid);
 
 	/**
 	 * @throws PortalException
@@ -90,12 +88,12 @@ public interface UserLoginLocalService
 	/**
 	 * Deletes the user login with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
-	 * @param userId the primary key of the user login
+	 * @param uuid the primary key of the user login
 	 * @return the user login that was removed
 	 * @throws PortalException if a user login with the primary key could not be found
 	 */
 	@Indexable(type = IndexableType.DELETE)
-	public UserLogin deleteUserLogin(long userId) throws PortalException;
+	public UserLogin deleteUserLogin(String uuid) throws PortalException;
 
 	/**
 	 * Deletes the user login from the database. Also notifies the appropriate model listeners.
@@ -173,13 +171,7 @@ public interface UserLoginLocalService
 		DynamicQuery dynamicQuery, Projection projection);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public UserLogin fetchUserLogin(long userId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+	public UserLogin fetchUserLogin(String uuid);
 
 	/**
 	 * Returns the OSGi service identifier.
@@ -196,12 +188,12 @@ public interface UserLoginLocalService
 	/**
 	 * Returns the user login with the primary key.
 	 *
-	 * @param userId the primary key of the user login
+	 * @param uuid the primary key of the user login
 	 * @return the user login
 	 * @throws PortalException if a user login with the primary key could not be found
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public UserLogin getUserLogin(long userId) throws PortalException;
+	public UserLogin getUserLogin(String uuid) throws PortalException;
 
 	/**
 	 * Returns a range of all the user logins.
@@ -228,10 +220,13 @@ public interface UserLoginLocalService
 	/**
 	 * updateUserLogin: Updates the user login record with the given info.
 	 *
-	 * @param userId User who logged in.
+	 * @param userUUID  User who logged in.
 	 * @param loginDate Date when the user logged in.
+	 * @param screenName Screen Name of the user
+	 * @param systemName The system name (es. Hostname or FQDN, or VirtualHost)
 	 */
-	public void updateUserLogin(long userId, Date loginDate);
+	public void updateUserLogin(
+		String userUUID, Date loginDate, String screenName, String systemName);
 
 	/**
 	 * Updates the user login in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

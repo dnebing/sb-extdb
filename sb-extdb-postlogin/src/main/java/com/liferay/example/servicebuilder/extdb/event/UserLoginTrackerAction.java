@@ -1,7 +1,6 @@
 package com.liferay.example.servicebuilder.extdb.event;
 
 import com.liferay.example.servicebuilder.extdb.service.UserLoginLocalService;
-import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.kernel.events.ActionException;
 import com.liferay.portal.kernel.events.LifecycleAction;
 import com.liferay.portal.kernel.events.LifecycleEvent;
@@ -9,17 +8,21 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.util.Date;
 
+import com.liferay.portal.kernel.util.Validator;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * class UserLoginTrackerAction: This is the post login hook to track user logins.
  *
  * @author dnebinger
+ * @author Antonio Musarra
  */
 @Component(
 	immediate = true, property = "key=login.events.post",
@@ -28,15 +31,8 @@ import org.osgi.util.tracker.ServiceTracker;
 public class UserLoginTrackerAction implements LifecycleAction {
 
 	/**
-	 * getService: Returns the user tracker service instance.
-	 * @return UserLoginLocalService The instance to use.
-	 */
-	public UserLoginLocalService getService() {
-		return _serviceTracker.getService();
-	}
-
-	/**
 	 * processLifecycleEvent: Invoked when the registered event is triggered.
+	 *
 	 * @param lifecycleEvent
 	 * @throws ActionException
 	 */
@@ -49,38 +45,41 @@ public class UserLoginTrackerAction implements LifecycleAction {
 		User user = null;
 
 		try {
-			user = PortalUtil.getUser(lifecycleEvent.getRequest());
+			user = _portal.getUser(lifecycleEvent.getRequest());
 		}
 		catch (PortalException pe) {
-			logger.error("Error accessing login user: " + pe.getMessage(), pe);
+			if (_log.isErrorEnabled()) {
+				_log.error(
+					"Error accessing login user: " + pe.getMessage(), pe);
+			}
 		}
 
-		if (user == null) {
-			logger.warn("Could not find the logged in user, nothing to track.");
+		if (Validator.isNull(user)) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Could not find the logged in user, nothing to track.");
+
+			}
 
 			return;
 		}
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("User [" + user.getScreenName() + "] has logged in.");
+		if (_log.isDebugEnabled()) {
+			_log.debug("User [" + user.getScreenName() + "] has logged in.");
 		}
 
 		// we have the user, let's invoke the service
-
-		getService().updateUserLogin(user.getUserId(), new Date());
-
-		// alternatively we could just use the local service util:
-		// UserLoginLocalServiceUtil.updateUserLogin(user.getUserId(), new Date());
-
+		_userLoginLocalService.updateUserLogin(
+			user.getUserUuid(), new Date(), user.getScreenName(),
+			user.getLoginIP());
 	}
 
-	private static final Log logger = LogFactoryUtil.getLog(
+	@Reference(policyOption = ReferencePolicyOption.GREEDY)
+	private UserLoginLocalService _userLoginLocalService;
+
+	@Reference
+	private Portal _portal;
+
+	private static final Log _log = LogFactoryUtil.getLog(
 		UserLoginTrackerAction.class);
-
-	// use the OSGi service tracker to get an instance of the service when available.
-
-	private ServiceTracker<UserLoginLocalService, UserLoginLocalService>
-		_serviceTracker = ServiceTrackerFactory.open(
-			UserLoginLocalService.class);
-
 }

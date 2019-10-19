@@ -55,13 +55,13 @@ public class UserLoginLocalServiceUtil {
 	/**
 	 * Creates a new user login with the primary key. Does not add the user login to the database.
 	 *
-	 * @param userId the primary key for the new user login
+	 * @param uuid the primary key for the new user login
 	 * @return the new user login
 	 */
 	public static com.liferay.example.servicebuilder.extdb.model.UserLogin
-		createUserLogin(long userId) {
+		createUserLogin(String uuid) {
 
-		return getService().createUserLogin(userId);
+		return getService().createUserLogin(uuid);
 	}
 
 	/**
@@ -78,15 +78,15 @@ public class UserLoginLocalServiceUtil {
 	/**
 	 * Deletes the user login with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
-	 * @param userId the primary key of the user login
+	 * @param uuid the primary key of the user login
 	 * @return the user login that was removed
 	 * @throws PortalException if a user login with the primary key could not be found
 	 */
 	public static com.liferay.example.servicebuilder.extdb.model.UserLogin
-			deleteUserLogin(long userId)
+			deleteUserLogin(String uuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return getService().deleteUserLogin(userId);
+		return getService().deleteUserLogin(uuid);
 	}
 
 	/**
@@ -189,22 +189,9 @@ public class UserLoginLocalServiceUtil {
 	}
 
 	public static com.liferay.example.servicebuilder.extdb.model.UserLogin
-		fetchUserLogin(long userId) {
+		fetchUserLogin(String uuid) {
 
-		return getService().fetchUserLogin(userId);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
-		getActionableDynamicQuery() {
-
-		return getService().getActionableDynamicQuery();
-	}
-
-	public static
-		com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery
-			getIndexableActionableDynamicQuery() {
-
-		return getService().getIndexableActionableDynamicQuery();
+		return getService().fetchUserLogin(uuid);
 	}
 
 	/**
@@ -226,15 +213,15 @@ public class UserLoginLocalServiceUtil {
 	/**
 	 * Returns the user login with the primary key.
 	 *
-	 * @param userId the primary key of the user login
+	 * @param uuid the primary key of the user login
 	 * @return the user login
 	 * @throws PortalException if a user login with the primary key could not be found
 	 */
 	public static com.liferay.example.servicebuilder.extdb.model.UserLogin
-			getUserLogin(long userId)
+			getUserLogin(String uuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return getService().getUserLogin(userId);
+		return getService().getUserLogin(uuid);
 	}
 
 	/**
@@ -267,11 +254,17 @@ public class UserLoginLocalServiceUtil {
 	/**
 	 * updateUserLogin: Updates the user login record with the given info.
 	 *
-	 * @param userId User who logged in.
+	 * @param userUUID  User who logged in.
 	 * @param loginDate Date when the user logged in.
+	 * @param screenName Screen Name of the user
+	 * @param systemName The system name (es. Hostname or FQDN, or VirtualHost)
 	 */
-	public static void updateUserLogin(long userId, java.util.Date loginDate) {
-		getService().updateUserLogin(userId, loginDate);
+	public static void updateUserLogin(
+		String userUUID, java.util.Date loginDate, String screenName,
+		String systemName) {
+
+		getService().updateUserLogin(
+			userUUID, loginDate, screenName, systemName);
 	}
 
 	/**

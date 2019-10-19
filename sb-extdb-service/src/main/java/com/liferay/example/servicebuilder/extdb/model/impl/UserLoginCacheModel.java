@@ -47,7 +47,7 @@ public class UserLoginCacheModel
 
 		UserLoginCacheModel userLoginCacheModel = (UserLoginCacheModel)obj;
 
-		if (userId == userLoginCacheModel.userId) {
+		if (uuid.equals(userLoginCacheModel.uuid)) {
 			return true;
 		}
 
@@ -56,15 +56,19 @@ public class UserLoginCacheModel
 
 	@Override
 	public int hashCode() {
-		return HashUtil.hash(0, userId);
+		return HashUtil.hash(0, uuid);
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(15);
 
-		sb.append("{userId=");
-		sb.append(userId);
+		sb.append("{uuid=");
+		sb.append(uuid);
+		sb.append(", screenName=");
+		sb.append(screenName);
+		sb.append(", systemName=");
+		sb.append(systemName);
 		sb.append(", lastLogin=");
 		sb.append(lastLogin);
 		sb.append(", totalLogins=");
@@ -82,7 +86,26 @@ public class UserLoginCacheModel
 	public UserLogin toEntityModel() {
 		UserLoginImpl userLoginImpl = new UserLoginImpl();
 
-		userLoginImpl.setUserId(userId);
+		if (uuid == null) {
+			userLoginImpl.setUuid("");
+		}
+		else {
+			userLoginImpl.setUuid(uuid);
+		}
+
+		if (screenName == null) {
+			userLoginImpl.setScreenName("");
+		}
+		else {
+			userLoginImpl.setScreenName(screenName);
+		}
+
+		if (systemName == null) {
+			userLoginImpl.setSystemName("");
+		}
+		else {
+			userLoginImpl.setSystemName(systemName);
+		}
 
 		if (lastLogin == Long.MIN_VALUE) {
 			userLoginImpl.setLastLogin(null);
@@ -102,7 +125,9 @@ public class UserLoginCacheModel
 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
-		userId = objectInput.readLong();
+		uuid = objectInput.readUTF();
+		screenName = objectInput.readUTF();
+		systemName = objectInput.readUTF();
 		lastLogin = objectInput.readLong();
 
 		totalLogins = objectInput.readLong();
@@ -114,7 +139,27 @@ public class UserLoginCacheModel
 
 	@Override
 	public void writeExternal(ObjectOutput objectOutput) throws IOException {
-		objectOutput.writeLong(userId);
+		if (uuid == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(uuid);
+		}
+
+		if (screenName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(screenName);
+		}
+
+		if (systemName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(systemName);
+		}
+
 		objectOutput.writeLong(lastLogin);
 
 		objectOutput.writeLong(totalLogins);
@@ -124,7 +169,9 @@ public class UserLoginCacheModel
 		objectOutput.writeLong(shortestTimeBetweenLogins);
 	}
 
-	public long userId;
+	public String uuid;
+	public String screenName;
+	public String systemName;
 	public long lastLogin;
 	public long totalLogins;
 	public long longestTimeBetweenLogins;

@@ -22,11 +22,8 @@ import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdate;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdateFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DefaultActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -87,26 +84,26 @@ public abstract class UserLoginLocalServiceBaseImpl
 	/**
 	 * Creates a new user login with the primary key. Does not add the user login to the database.
 	 *
-	 * @param userId the primary key for the new user login
+	 * @param uuid the primary key for the new user login
 	 * @return the new user login
 	 */
 	@Override
 	@Transactional(enabled = false)
-	public UserLogin createUserLogin(long userId) {
-		return userLoginPersistence.create(userId);
+	public UserLogin createUserLogin(String uuid) {
+		return userLoginPersistence.create(uuid);
 	}
 
 	/**
 	 * Deletes the user login with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
-	 * @param userId the primary key of the user login
+	 * @param uuid the primary key of the user login
 	 * @return the user login that was removed
 	 * @throws PortalException if a user login with the primary key could not be found
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public UserLogin deleteUserLogin(long userId) throws PortalException {
-		return userLoginPersistence.remove(userId);
+	public UserLogin deleteUserLogin(String uuid) throws PortalException {
+		return userLoginPersistence.remove(uuid);
 	}
 
 	/**
@@ -209,61 +206,20 @@ public abstract class UserLoginLocalServiceBaseImpl
 	}
 
 	@Override
-	public UserLogin fetchUserLogin(long userId) {
-		return userLoginPersistence.fetchByPrimaryKey(userId);
+	public UserLogin fetchUserLogin(String uuid) {
+		return userLoginPersistence.fetchByPrimaryKey(uuid);
 	}
 
 	/**
 	 * Returns the user login with the primary key.
 	 *
-	 * @param userId the primary key of the user login
+	 * @param uuid the primary key of the user login
 	 * @return the user login
 	 * @throws PortalException if a user login with the primary key could not be found
 	 */
 	@Override
-	public UserLogin getUserLogin(long userId) throws PortalException {
-		return userLoginPersistence.findByPrimaryKey(userId);
-	}
-
-	@Override
-	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery =
-			new DefaultActionableDynamicQuery();
-
-		actionableDynamicQuery.setBaseLocalService(userLoginLocalService);
-		actionableDynamicQuery.setClassLoader(getClassLoader());
-		actionableDynamicQuery.setModelClass(UserLogin.class);
-
-		actionableDynamicQuery.setPrimaryKeyPropertyName("userId");
-
-		return actionableDynamicQuery;
-	}
-
-	@Override
-	public IndexableActionableDynamicQuery
-		getIndexableActionableDynamicQuery() {
-
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
-			new IndexableActionableDynamicQuery();
-
-		indexableActionableDynamicQuery.setBaseLocalService(
-			userLoginLocalService);
-		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
-		indexableActionableDynamicQuery.setModelClass(UserLogin.class);
-
-		indexableActionableDynamicQuery.setPrimaryKeyPropertyName("userId");
-
-		return indexableActionableDynamicQuery;
-	}
-
-	protected void initActionableDynamicQuery(
-		ActionableDynamicQuery actionableDynamicQuery) {
-
-		actionableDynamicQuery.setBaseLocalService(userLoginLocalService);
-		actionableDynamicQuery.setClassLoader(getClassLoader());
-		actionableDynamicQuery.setModelClass(UserLogin.class);
-
-		actionableDynamicQuery.setPrimaryKeyPropertyName("userId");
+	public UserLogin getUserLogin(String uuid) throws PortalException {
+		return userLoginPersistence.findByPrimaryKey(uuid);
 	}
 
 	/**

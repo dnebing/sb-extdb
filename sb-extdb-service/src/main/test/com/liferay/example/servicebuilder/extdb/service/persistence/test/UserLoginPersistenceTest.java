@@ -17,10 +17,8 @@ package com.liferay.example.servicebuilder.extdb.service.persistence.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.example.servicebuilder.extdb.exception.NoSuchUserLoginException;
 import com.liferay.example.servicebuilder.extdb.model.UserLogin;
-import com.liferay.example.servicebuilder.extdb.service.UserLoginLocalServiceUtil;
 import com.liferay.example.servicebuilder.extdb.service.persistence.UserLoginPersistence;
 import com.liferay.example.servicebuilder.extdb.service.persistence.UserLoginUtil;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
@@ -29,7 +27,6 @@ import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
-import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.Time;
@@ -91,7 +88,7 @@ public class UserLoginPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		String pk = RandomTestUtil.randomString();
 
 		UserLogin userLogin = _persistence.create(pk);
 
@@ -119,9 +116,13 @@ public class UserLoginPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		String pk = RandomTestUtil.randomString();
 
 		UserLogin newUserLogin = _persistence.create(pk);
+
+		newUserLogin.setScreenName(RandomTestUtil.randomString());
+
+		newUserLogin.setSystemName(RandomTestUtil.randomString());
 
 		newUserLogin.setLastLogin(RandomTestUtil.nextDate());
 
@@ -137,7 +138,11 @@ public class UserLoginPersistenceTest {
 			newUserLogin.getPrimaryKey());
 
 		Assert.assertEquals(
-			existingUserLogin.getUserId(), newUserLogin.getUserId());
+			existingUserLogin.getUuid(), newUserLogin.getUuid());
+		Assert.assertEquals(
+			existingUserLogin.getScreenName(), newUserLogin.getScreenName());
+		Assert.assertEquals(
+			existingUserLogin.getSystemName(), newUserLogin.getSystemName());
 		Assert.assertEquals(
 			Time.getShortTimestamp(existingUserLogin.getLastLogin()),
 			Time.getShortTimestamp(newUserLogin.getLastLogin()));
@@ -163,7 +168,7 @@ public class UserLoginPersistenceTest {
 
 	@Test(expected = NoSuchUserLoginException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		String pk = RandomTestUtil.randomString();
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -176,8 +181,9 @@ public class UserLoginPersistenceTest {
 
 	protected OrderByComparator<UserLogin> getOrderByComparator() {
 		return OrderByComparatorFactoryUtil.create(
-			"ExtDB_UserLogin", "userId", true, "lastLogin", true, "totalLogins",
-			true, "longestTimeBetweenLogins", true, "shortestTimeBetweenLogins",
+			"ExtDB_UserLogin", "uuid", true, "screenName", true, "systemName",
+			true, "lastLogin", true, "totalLogins", true,
+			"longestTimeBetweenLogins", true, "shortestTimeBetweenLogins",
 			true);
 	}
 
@@ -193,7 +199,7 @@ public class UserLoginPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		String pk = RandomTestUtil.randomString();
 
 		UserLogin missingUserLogin = _persistence.fetchByPrimaryKey(pk);
 
@@ -226,9 +232,9 @@ public class UserLoginPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		String pk1 = RandomTestUtil.randomString();
 
-		long pk2 = RandomTestUtil.nextLong();
+		String pk2 = RandomTestUtil.randomString();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -247,7 +253,7 @@ public class UserLoginPersistenceTest {
 
 		UserLogin newUserLogin = addUserLogin();
 
-		long pk = RandomTestUtil.nextLong();
+		String pk = RandomTestUtil.randomString();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -289,30 +295,6 @@ public class UserLoginPersistenceTest {
 	}
 
 	@Test
-	public void testActionableDynamicQuery() throws Exception {
-		final IntegerWrapper count = new IntegerWrapper();
-
-		ActionableDynamicQuery actionableDynamicQuery =
-			UserLoginLocalServiceUtil.getActionableDynamicQuery();
-
-		actionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<UserLogin>() {
-
-				@Override
-				public void performAction(UserLogin userLogin) {
-					Assert.assertNotNull(userLogin);
-
-					count.increment();
-				}
-
-			});
-
-		actionableDynamicQuery.performActions();
-
-		Assert.assertEquals(count.getValue(), _persistence.countAll());
-	}
-
-	@Test
 	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
 		UserLogin newUserLogin = addUserLogin();
 
@@ -320,7 +302,7 @@ public class UserLoginPersistenceTest {
 			UserLogin.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("userId", newUserLogin.getUserId()));
+			RestrictionsFactoryUtil.eq("uuid", newUserLogin.getUuid()));
 
 		List<UserLogin> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -338,7 +320,7 @@ public class UserLoginPersistenceTest {
 			UserLogin.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("userId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq("uuid", RandomTestUtil.randomString()));
 
 		List<UserLogin> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -353,20 +335,20 @@ public class UserLoginPersistenceTest {
 		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
 			UserLogin.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property("userId"));
+		dynamicQuery.setProjection(ProjectionFactoryUtil.property("uuid"));
 
-		Object newUserId = newUserLogin.getUserId();
+		Object newUuid = newUserLogin.getUuid();
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.in("userId", new Object[] {newUserId}));
+			RestrictionsFactoryUtil.in("uuid", new Object[] {newUuid}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
 		Assert.assertEquals(1, result.size());
 
-		Object existingUserId = result.get(0);
+		Object existingUuid = result.get(0);
 
-		Assert.assertEquals(existingUserId, newUserId);
+		Assert.assertEquals(existingUuid, newUuid);
 	}
 
 	@Test
@@ -374,11 +356,11 @@ public class UserLoginPersistenceTest {
 		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
 			UserLogin.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property("userId"));
+		dynamicQuery.setProjection(ProjectionFactoryUtil.property("uuid"));
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"userId", new Object[] {RandomTestUtil.nextLong()}));
+				"uuid", new Object[] {RandomTestUtil.randomString()}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -386,9 +368,13 @@ public class UserLoginPersistenceTest {
 	}
 
 	protected UserLogin addUserLogin() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		String pk = RandomTestUtil.randomString();
 
 		UserLogin userLogin = _persistence.create(pk);
+
+		userLogin.setScreenName(RandomTestUtil.randomString());
+
+		userLogin.setSystemName(RandomTestUtil.randomString());
 
 		userLogin.setLastLogin(RandomTestUtil.nextDate());
 

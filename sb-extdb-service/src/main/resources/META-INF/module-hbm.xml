@@ -4,9 +4,11 @@
 <hibernate-mapping auto-import="false" default-lazy="false">
 	<import class="com.liferay.example.servicebuilder.extdb.model.UserLogin" />
 	<class name="com.liferay.example.servicebuilder.extdb.model.impl.UserLoginImpl" table="ExtDB_UserLogin">
-		<id name="userId" type="long">
+		<id column="uuid_" name="uuid" type="java.lang.String">
 			<generator class="assigned" />
 		</id>
+		<property name="screenName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="systemName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="lastLogin" type="org.hibernate.type.TimestampType" />
 		<property name="totalLogins" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="longestTimeBetweenLogins" type="com.liferay.portal.dao.orm.hibernate.LongType" />

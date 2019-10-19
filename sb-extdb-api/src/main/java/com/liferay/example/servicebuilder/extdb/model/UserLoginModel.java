@@ -17,6 +17,7 @@ package com.liferay.example.servicebuilder.extdb.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
+import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -50,42 +51,59 @@ public interface UserLoginModel extends BaseModel<UserLogin> {
 	 *
 	 * @return the primary key of this user login
 	 */
-	public long getPrimaryKey();
+	public String getPrimaryKey();
 
 	/**
 	 * Sets the primary key of this user login.
 	 *
 	 * @param primaryKey the primary key of this user login
 	 */
-	public void setPrimaryKey(long primaryKey);
+	public void setPrimaryKey(String primaryKey);
 
 	/**
-	 * Returns the user ID of this user login.
+	 * Returns the uuid of this user login.
 	 *
-	 * @return the user ID of this user login
+	 * @return the uuid of this user login
 	 */
-	public long getUserId();
+	@AutoEscape
+	public String getUuid();
 
 	/**
-	 * Sets the user ID of this user login.
+	 * Sets the uuid of this user login.
 	 *
-	 * @param userId the user ID of this user login
+	 * @param uuid the uuid of this user login
 	 */
-	public void setUserId(long userId);
+	public void setUuid(String uuid);
 
 	/**
-	 * Returns the user uuid of this user login.
+	 * Returns the screen name of this user login.
 	 *
-	 * @return the user uuid of this user login
+	 * @return the screen name of this user login
 	 */
-	public String getUserUuid();
+	@AutoEscape
+	public String getScreenName();
 
 	/**
-	 * Sets the user uuid of this user login.
+	 * Sets the screen name of this user login.
 	 *
-	 * @param userUuid the user uuid of this user login
+	 * @param screenName the screen name of this user login
 	 */
-	public void setUserUuid(String userUuid);
+	public void setScreenName(String screenName);
+
+	/**
+	 * Returns the system name of this user login.
+	 *
+	 * @return the system name of this user login
+	 */
+	@AutoEscape
+	public String getSystemName();
+
+	/**
+	 * Sets the system name of this user login.
+	 *
+	 * @param systemName the system name of this user login
+	 */
+	public void setSystemName(String systemName);
 
 	/**
 	 * Returns the last login of this user login.

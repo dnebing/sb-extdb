@@ -23,16 +23,20 @@ import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
+import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -75,6 +79,24 @@ public class UserLoginPersistenceImpl
 
 	public UserLoginPersistenceImpl() {
 		setModelClass(UserLogin.class);
+
+		Map<String, String> dbColumnNames = new HashMap<String, String>();
+
+		dbColumnNames.put("uuid", "uuid_");
+
+		try {
+			Field field = BasePersistenceImpl.class.getDeclaredField(
+				"_dbColumnNames");
+
+			field.setAccessible(true);
+
+			field.set(this, dbColumnNames);
+		}
+		catch (Exception e) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(e, e);
+			}
+		}
 	}
 
 	/**
@@ -159,15 +181,15 @@ public class UserLoginPersistenceImpl
 	/**
 	 * Creates a new user login with the primary key. Does not add the user login to the database.
 	 *
-	 * @param userId the primary key for the new user login
+	 * @param uuid the primary key for the new user login
 	 * @return the new user login
 	 */
 	@Override
-	public UserLogin create(long userId) {
+	public UserLogin create(String uuid) {
 		UserLogin userLogin = new UserLoginImpl();
 
 		userLogin.setNew(true);
-		userLogin.setPrimaryKey(userId);
+		userLogin.setPrimaryKey(uuid);
 
 		return userLogin;
 	}
@@ -175,13 +197,13 @@ public class UserLoginPersistenceImpl
 	/**
 	 * Removes the user login with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
-	 * @param userId the primary key of the user login
+	 * @param uuid the primary key of the user login
 	 * @return the user login that was removed
 	 * @throws NoSuchUserLoginException if a user login with the primary key could not be found
 	 */
 	@Override
-	public UserLogin remove(long userId) throws NoSuchUserLoginException {
-		return remove((Serializable)userId);
+	public UserLogin remove(String uuid) throws NoSuchUserLoginException {
+		return remove((Serializable)uuid);
 	}
 
 	/**
@@ -325,15 +347,15 @@ public class UserLoginPersistenceImpl
 	/**
 	 * Returns the user login with the primary key or throws a <code>NoSuchUserLoginException</code> if it could not be found.
 	 *
-	 * @param userId the primary key of the user login
+	 * @param uuid the primary key of the user login
 	 * @return the user login
 	 * @throws NoSuchUserLoginException if a user login with the primary key could not be found
 	 */
 	@Override
-	public UserLogin findByPrimaryKey(long userId)
+	public UserLogin findByPrimaryKey(String uuid)
 		throws NoSuchUserLoginException {
 
-		return findByPrimaryKey((Serializable)userId);
+		return findByPrimaryKey((Serializable)uuid);
 	}
 
 	/**
@@ -390,12 +412,12 @@ public class UserLoginPersistenceImpl
 	/**
 	 * Returns the user login with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param userId the primary key of the user login
+	 * @param uuid the primary key of the user login
 	 * @return the user login, or <code>null</code> if a user login with the primary key could not be found
 	 */
 	@Override
-	public UserLogin fetchByPrimaryKey(long userId) {
-		return fetchByPrimaryKey((Serializable)userId);
+	public UserLogin fetchByPrimaryKey(String uuid) {
+		return fetchByPrimaryKey((Serializable)uuid);
 	}
 
 	@Override
@@ -453,8 +475,8 @@ public class UserLoginPersistenceImpl
 
 		query.append(_SQL_SELECT_USERLOGIN_WHERE_PKS_IN);
 
-		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append((long)primaryKey);
+		for (int i = 0; i < uncachedPrimaryKeys.size(); i++) {
+			query.append("?");
 
 			query.append(",");
 		}
@@ -471,6 +493,12 @@ public class UserLoginPersistenceImpl
 			session = openSession();
 
 			Query q = session.createQuery(sql);
+
+			QueryPos qPos = QueryPos.getInstance(q);
+
+			for (Serializable primaryKey : uncachedPrimaryKeys) {
+				qPos.add((String)primaryKey);
+			}
 
 			for (UserLogin userLogin : (List<UserLogin>)q.list()) {
 				map.put(userLogin.getPrimaryKeyObj(), userLogin);
@@ -683,6 +711,11 @@ public class UserLoginPersistenceImpl
 	}
 
 	@Override
+	public Set<String> getBadColumnNames() {
+		return _badColumnNames;
+	}
+
+	@Override
 	protected Map<String, Integer> getTableColumnsMap() {
 		return UserLoginModelImpl.TABLE_COLUMNS_MAP;
 	}
@@ -726,7 +759,7 @@ public class UserLoginPersistenceImpl
 		"SELECT userLogin FROM UserLogin userLogin";
 
 	private static final String _SQL_SELECT_USERLOGIN_WHERE_PKS_IN =
-		"SELECT userLogin FROM UserLogin userLogin WHERE userId IN (";
+		"SELECT userLogin FROM UserLogin userLogin WHERE uuid_ IN (";
 
 	private static final String _SQL_COUNT_USERLOGIN =
 		"SELECT COUNT(userLogin) FROM UserLogin userLogin";
@@ -738,5 +771,8 @@ public class UserLoginPersistenceImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		UserLoginPersistenceImpl.class);
+
+	private static final Set<String> _badColumnNames = SetUtil.fromArray(
+		new String[] {"uuid"});
 
 }

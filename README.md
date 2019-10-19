@@ -54,8 +54,8 @@ The [service.xml](https://github.com/amusarra/sb-extdb/blob/master/sb-extdb-serv
 
 ```xml
 <?xml version="1.0"?>
-<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.0.0//EN"
-		"http://www.liferay.com/dtd/liferay-service-builder_7_0_0.dtd">
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.1.0//EN"
+		"http://www.liferay.com/dtd/liferay-service-builder_7_1_0.dtd">
 
 <service-builder package-path="com.liferay.example.servicebuilder.extdb">
 

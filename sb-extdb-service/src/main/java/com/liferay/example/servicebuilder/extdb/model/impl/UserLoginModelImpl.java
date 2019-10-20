@@ -16,13 +16,13 @@ package com.liferay.example.servicebuilder.extdb.model.impl;
 
 import com.liferay.example.servicebuilder.extdb.model.UserLogin;
 import com.liferay.example.servicebuilder.extdb.model.UserLoginModel;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 
 import java.io.Serializable;
 
@@ -39,6 +39,8 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 /**
  * The base model implementation for the UserLogin service. Represents a row in the &quot;ExtDB_UserLogin&quot; database table, with each column mapped to a property of this class.
  *
@@ -50,10 +52,11 @@ import java.util.function.Function;
  * @see UserLoginImpl
  * @generated
  */
+@ProviderType
 public class UserLoginModelImpl
 	extends BaseModelImpl<UserLogin> implements UserLoginModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a user login model instance should use the <code>UserLogin</code> interface instead.
@@ -237,162 +240,37 @@ public class UserLoginModelImpl
 		Map<String, BiConsumer<UserLogin, ?>> attributeSetterBiConsumers =
 			new LinkedHashMap<String, BiConsumer<UserLogin, ?>>();
 
-		attributeGetterFunctions.put(
-			"uuid",
-			new Function<UserLogin, Object>() {
-
-				@Override
-				public Object apply(UserLogin userLogin) {
-					return userLogin.getUuid();
-				}
-
-			});
+		attributeGetterFunctions.put("uuid", UserLogin::getUuid);
 		attributeSetterBiConsumers.put(
-			"uuid",
-			new BiConsumer<UserLogin, Object>() {
-
-				@Override
-				public void accept(UserLogin userLogin, Object uuidObject) {
-					userLogin.setUuid((String)uuidObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"screenName",
-			new Function<UserLogin, Object>() {
-
-				@Override
-				public Object apply(UserLogin userLogin) {
-					return userLogin.getScreenName();
-				}
-
-			});
+			"uuid", (BiConsumer<UserLogin, String>)UserLogin::setUuid);
+		attributeGetterFunctions.put("screenName", UserLogin::getScreenName);
 		attributeSetterBiConsumers.put(
 			"screenName",
-			new BiConsumer<UserLogin, Object>() {
-
-				@Override
-				public void accept(
-					UserLogin userLogin, Object screenNameObject) {
-
-					userLogin.setScreenName((String)screenNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"systemName",
-			new Function<UserLogin, Object>() {
-
-				@Override
-				public Object apply(UserLogin userLogin) {
-					return userLogin.getSystemName();
-				}
-
-			});
+			(BiConsumer<UserLogin, String>)UserLogin::setScreenName);
+		attributeGetterFunctions.put("systemName", UserLogin::getSystemName);
 		attributeSetterBiConsumers.put(
 			"systemName",
-			new BiConsumer<UserLogin, Object>() {
-
-				@Override
-				public void accept(
-					UserLogin userLogin, Object systemNameObject) {
-
-					userLogin.setSystemName((String)systemNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"lastLogin",
-			new Function<UserLogin, Object>() {
-
-				@Override
-				public Object apply(UserLogin userLogin) {
-					return userLogin.getLastLogin();
-				}
-
-			});
+			(BiConsumer<UserLogin, String>)UserLogin::setSystemName);
+		attributeGetterFunctions.put("lastLogin", UserLogin::getLastLogin);
 		attributeSetterBiConsumers.put(
-			"lastLogin",
-			new BiConsumer<UserLogin, Object>() {
-
-				@Override
-				public void accept(
-					UserLogin userLogin, Object lastLoginObject) {
-
-					userLogin.setLastLogin((Date)lastLoginObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"totalLogins",
-			new Function<UserLogin, Object>() {
-
-				@Override
-				public Object apply(UserLogin userLogin) {
-					return userLogin.getTotalLogins();
-				}
-
-			});
+			"lastLogin", (BiConsumer<UserLogin, Date>)UserLogin::setLastLogin);
+		attributeGetterFunctions.put("totalLogins", UserLogin::getTotalLogins);
 		attributeSetterBiConsumers.put(
 			"totalLogins",
-			new BiConsumer<UserLogin, Object>() {
-
-				@Override
-				public void accept(
-					UserLogin userLogin, Object totalLoginsObject) {
-
-					userLogin.setTotalLogins((Long)totalLoginsObject);
-				}
-
-			});
+			(BiConsumer<UserLogin, Long>)UserLogin::setTotalLogins);
 		attributeGetterFunctions.put(
-			"longestTimeBetweenLogins",
-			new Function<UserLogin, Object>() {
-
-				@Override
-				public Object apply(UserLogin userLogin) {
-					return userLogin.getLongestTimeBetweenLogins();
-				}
-
-			});
+			"longestTimeBetweenLogins", UserLogin::getLongestTimeBetweenLogins);
 		attributeSetterBiConsumers.put(
 			"longestTimeBetweenLogins",
-			new BiConsumer<UserLogin, Object>() {
-
-				@Override
-				public void accept(
-					UserLogin userLogin,
-					Object longestTimeBetweenLoginsObject) {
-
-					userLogin.setLongestTimeBetweenLogins(
-						(Long)longestTimeBetweenLoginsObject);
-				}
-
-			});
+			(BiConsumer<UserLogin, Long>)
+				UserLogin::setLongestTimeBetweenLogins);
 		attributeGetterFunctions.put(
 			"shortestTimeBetweenLogins",
-			new Function<UserLogin, Object>() {
-
-				@Override
-				public Object apply(UserLogin userLogin) {
-					return userLogin.getShortestTimeBetweenLogins();
-				}
-
-			});
+			UserLogin::getShortestTimeBetweenLogins);
 		attributeSetterBiConsumers.put(
 			"shortestTimeBetweenLogins",
-			new BiConsumer<UserLogin, Object>() {
-
-				@Override
-				public void accept(
-					UserLogin userLogin,
-					Object shortestTimeBetweenLoginsObject) {
-
-					userLogin.setShortestTimeBetweenLogins(
-						(Long)shortestTimeBetweenLoginsObject);
-				}
-
-			});
+			(BiConsumer<UserLogin, Long>)
+				UserLogin::setShortestTimeBetweenLogins);
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);

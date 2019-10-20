@@ -14,13 +14,13 @@
 
 package com.liferay.example.servicebuilder.extdb.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
+import org.osgi.annotation.versioning.ProviderType;
 
 /**
  * The extended model implementation for the UserLogin service. Represents a row in the &quot;ExtDB_UserLogin&quot; database table, with each column mapped to a property of this class.
  *
  * <p>
- * Helper methods and all application logic should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the {@link com.liferay.example.servicebuilder.extdb.model.UserLogin} interface.
+ * Helper methods and all application logic should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the <code>com.liferay.example.servicebuilder.extdb.model.UserLogin</code> interface.
  * </p>
  *
  * @author Brian Wing Shun Chan

@@ -17,6 +17,8 @@ package com.liferay.example.servicebuilder.extdb.model.impl;
 import com.liferay.example.servicebuilder.extdb.model.UserLogin;
 import com.liferay.example.servicebuilder.extdb.service.UserLoginLocalServiceUtil;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 /**
  * The extended model base implementation for the UserLogin service. Represents a row in the &quot;ExtDB_UserLogin&quot; database table, with each column mapped to a property of this class.
  *
@@ -29,10 +31,11 @@ import com.liferay.example.servicebuilder.extdb.service.UserLoginLocalServiceUti
  * @see UserLogin
  * @generated
  */
+@ProviderType
 public abstract class UserLoginBaseImpl
 	extends UserLoginModelImpl implements UserLogin {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a user login model instance should use the <code>UserLogin</code> interface instead.

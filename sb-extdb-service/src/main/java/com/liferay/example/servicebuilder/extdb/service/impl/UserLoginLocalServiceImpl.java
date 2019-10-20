@@ -14,13 +14,12 @@
 
 package com.liferay.example.servicebuilder.extdb.service.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.example.servicebuilder.extdb.model.UserLogin;
 import com.liferay.example.servicebuilder.extdb.service.base.UserLoginLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.osgi.annotation.versioning.ProviderType;
 
 import java.util.Date;
 

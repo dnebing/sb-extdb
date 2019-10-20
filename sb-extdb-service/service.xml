@@ -1,42 +1,42 @@
 <?xml version="1.0"?>
 <!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.2.0//EN"
-        "http://www.liferay.com/dtd/liferay-service-builder_7_2_0.dtd">
+		"http://www.liferay.com/dtd/liferay-service-builder_7_2_0.dtd">
 
-<service-builder package-path="com.liferay.example.servicebuilder.extdb" dependency-injector="spring">
+<service-builder dependency-injector="spring" package-path="com.liferay.example.servicebuilder.extdb">
 
-    <!-- Define a namespace for our example -->
-    <namespace>ExtDB</namespace>
+	<!-- Define a namespace for our example -->
+	<namespace>ExtDB</namespace>
 
-    <!-- Define an entity for tracking login information. -->
-    <entity
-            cache-enabled="false"
-            data-source="extDataSource"
-            local-service="true"
-            name="UserLogin"
-            remote-service="false"
-            uuid="false"
-    >
-        <!-- session-factory="extSessionFactory" tx-manager="extTransactionManager" -->
+	<!-- Define an entity for tracking login information. -->
+	<entity
+		cache-enabled="false"
+		data-source="extDataSource"
+		local-service="true"
+		name="UserLogin"
+		remote-service="false"
+		uuid="false"
+	>
+		<!-- session-factory="extSessionFactory" tx-manager="extTransactionManager" -->
 
-        <!-- uuid of the user model is our primary key. -->
-        <column name="uuid" primary="true" type="String"/>
+		<!-- uuid of the user model is our primary key. -->
+		<column name="uuid" primary="true" type="String" />
 
-        <!-- screenName of the user model is our primary key. -->
-        <column name="screenName" type="String"/>
+		<!-- screenName of the user model is our primary key. -->
+		<column name="screenName" type="String" />
 
-        <!-- SystemName of the user model is our primary key. -->
-        <column name="systemName" type="String"/>
+		<!-- SystemName of the user model is our primary key. -->
+		<column name="systemName" type="String" />
 
-        <!-- We'll track the date of last login -->
-        <column name="lastLogin" type="Date"/>
+		<!-- We'll track the date of last login -->
+		<column name="lastLogin" type="Date" />
 
-        <!-- We'll track the total number of individual logins for the user -->
-        <column name="totalLogins" type="long"/>
+		<!-- We'll track the total number of individual logins for the user -->
+		<column name="totalLogins" type="long" />
 
-        <!-- Let's also track the longest time between logins -->
-        <column name="longestTimeBetweenLogins" type="long"/>
+		<!-- Let's also track the longest time between logins -->
+		<column name="longestTimeBetweenLogins" type="long" />
 
-        <!-- And we'll also track the shortest time between logins -->
-        <column name="shortestTimeBetweenLogins" type="long"/>
-    </entity>
+		<!-- And we'll also track the shortest time between logins -->
+		<column name="shortestTimeBetweenLogins" type="long" />
+	</entity>
 </service-builder>

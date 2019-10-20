@@ -28,7 +28,7 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public class UserLoginImpl extends UserLoginBaseImpl {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this class directly. All methods that expect a user login model instance should use the {@link com.liferay.example.servicebuilder.extdb.model.UserLogin} interface instead.

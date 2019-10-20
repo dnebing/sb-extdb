@@ -1,9 +1,25 @@
 # Service Builder - External Database
-An example of a Service Builder project for Liferay 7.1 Community Edition/DXP that uses an external data source.
+[![Antonio Musarra's Blog](https://img.shields.io/badge/maintainer-Antonio_Musarra's_Blog-purple.svg?colorB=6e60cc)](https://www.dontesta.it)
+[![Build Status](https://travis-ci.org/amusarra/sb-extdb.svg?branch=master)](https://travis-ci.org/amusarra/liferay-72-soap-client-examples)
+[![Twitter Follow](https://img.shields.io/twitter/follow/antonio_musarra.svg?style=social&label=%40antonio_musarra%20on%20Twitter&style=plastic)](https://twitter.com/antonio_musarra)
+
+An example of a Service Builder project for Liferay 7.2 Community Edition/DXP that uses an external data source.
 
 This project is a fork of the [sb-extdb](https://github.com/dnebing/sb-extdb) project realized by [David H Nebinger](https://liferay.dev/web/guest/profile/-/user/user.26526). You can see the blog post for more info: [Liferay 7 - Service Builder and External Databases](https://liferay.dev/blogs/-/blogs/liferay-7-service-builder-and-external-databases)
 
-This fork has been updated to support Liferay 7.1. For more information, I invite you to read this documentation. [Connecting Service Builder to External Databases](https://portal.liferay.dev/docs/7-1/tutorials/-/knowledge_base/t/connecting-service-builder-to-external-databases#step-2-create-a-spring-bean-that-points-to-the-data-source)
+This fork has been updated to support Liferay 7.2. For more information, I invite you to read this documentation. [Connecting Service Builder to External Databases](https://portal.liferay.dev/docs/7-1/tutorials/-/knowledge_base/t/connecting-service-builder-to-external-databases#step-2-create-a-spring-bean-that-points-to-the-data-source)
+
+**Warning!** Since version 7.2 a little bit has changed. There are two different ways to create the connection:
+
+1. **DataSourceProvider:** This approach involves implementing a [`DataSourceProvider`](https://docs.liferay.com/ce/portal/7.2-latest/javadocs/portal-kernel/com/liferay/portal/kernel/dao/jdbc/DataSourceProvider.html) [`ServiceProviderInterface`](https://docs.oracle.com/javase/tutorial/sound/SPI-intro.html) (SPI). This way requires the fewest files and steps and works regardless of whether your Service Builder module uses the `ds` or `spring` [dependency injector](https://portal.liferay.dev/docs/7-2/appdev/-/knowledge_base/a/defining-global-service-information#dependency-injector);
+2. **Spring Beans:** Configure the connection using Spring XML files. This approach only works with Service Builder modules that use the `spring` [dependency injection option](https://portal.liferay.dev/docs/7-2/appdev/-/knowledge_base/a/defining-global-service-information#dependency-injector).
+
+This project uses the second option, the one via Spring Beans.
+
+For this reason I invite you to read these two documents:
+
+1. [Connecting the Data Source Using a DataSourceProvider](https://portal.liferay.dev/docs/7-2/appdev/-/knowledge_base/a/connecting-the-data-source-using-a-datasourceprovider)
+2. [Connecting the Data Source Using Spring Beans](https://portal.liferay.dev/docs/7-2/appdev/-/knowledge_base/a/connecting-the-data-source-using-spring-beans)
 
 In this documentation, I show the case that the Liferay database is PostgreSQL, while the external Microsoft SQL Server database.
 
@@ -52,20 +68,14 @@ The table shows the modules of the project is their purpose.
 
 
 
-Directly from the Liferay documentation, [Step 2: Create a Spring Bean...](https://portal.liferay.dev/docs/7-1/tutorials/-/knowledge_base/t/connecting-service-builder-to-external-databases#step-2-create-a-spring-bean-that-points-to-the-data-source), an important note for the 7.1 version of Liferay.
-
-![NoteSpringServiceContextExtender](docs/images/NoteSpringServiceContextExtender.png)
-
-
-
 The [service.xml](https://github.com/amusarra/sb-extdb/blob/master/sb-extdb-service/service.xml) file shows the definition of the **UserLogin** entity that mirrors the external database table.
 
 ```xml
 <?xml version="1.0"?>
-<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.1.0//EN"
-		"http://www.liferay.com/dtd/liferay-service-builder_7_1_0.dtd">
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.2.0//EN"
+		"http://www.liferay.com/dtd/liferay-service-builder_7_2_0.dtd">
 
-<service-builder package-path="com.liferay.example.servicebuilder.extdb">
+<service-builder dependency-injector="spring" package-path="com.liferay.example.servicebuilder.extdb">
 
 	<!-- Define a namespace for our example -->
 	<namespace>ExtDB</namespace>
@@ -79,6 +89,7 @@ The [service.xml](https://github.com/amusarra/sb-extdb/blob/master/sb-extdb-serv
 		remote-service="false"
 		uuid="false"
 	>
+		<!-- session-factory="extSessionFactory" tx-manager="extTransactionManager" -->
 
 		<!-- uuid of the user model is our primary key. -->
 		<column name="uuid" primary="true" type="String" />

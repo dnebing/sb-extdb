@@ -5,6 +5,8 @@ This project is a fork of the [sb-extdb](https://github.com/dnebing/sb-extdb) pr
 
 This fork has been updated to support Liferay 7.1. For more information, I invite you to read this documentation. [Connecting Service Builder to External Databases](https://portal.liferay.dev/docs/7-1/tutorials/-/knowledge_base/t/connecting-service-builder-to-external-databases#step-2-create-a-spring-bean-that-points-to-the-data-source)
 
+In this documentation, I show the case that the Liferay database is PostgreSQL, while the external Microsoft SQL Server database.
+
 
 
 ## 1. Quick Start
@@ -125,6 +127,10 @@ Below the configuration (portal-ext.properties) of the PostgreSQL database used 
 ```
 
 
+
+For the Liferay and external databases, I used two docker containers, one for PostgreSQL and one for SQL Server.
+
+![docker_ps_dbserver](docs/images/docker_ps_dbserver.png)
 
 Refer to the [liferay-portal-database-all-in-one-support](https://github.com/amusarra/liferay-portal-database-all-in-one-support) project to add SQL Server support to Liferay. For the JDBC driver to use refer to the documentation of the specific database server.
 

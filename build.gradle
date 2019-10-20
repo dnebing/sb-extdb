@@ -1,37 +1,24 @@
 buildscript {
-	repositories {
-		maven {
-			url "https://repository.liferay.com/nexus/content/repositories/public/"
-		}
-		maven {
-			url "https://repository.liferay.com/nexus/content/repositories/liferay-public-releases/"
+	dependencies {
+		classpath group: "biz.aQute.bnd", name: "biz.aQute.bnd.gradle", version: "4.2.0"
+		classpath (group: "com.liferay", name: "com.liferay.gradle.plugins", version: "4.4.5") {
+			exclude group: "biz.aQute.bnd", module: "biz.aQute.bnd.gradle"
 		}
 	}
-	dependencies {
-		classpath group: "com.liferay", name: "com.liferay.gradle.plugins", version: "latest.release"
+
+	repositories {
+		maven {
+			url "https://repository-cdn.liferay.com/nexus/content/groups/public"
+		}
 	}
 }
 
 subprojects {
-	buildscript {
-			repositories {
-				maven {
-					url "https://repository.liferay.com/nexus/content/repositories/public/"
-				}
-				maven {
-					url "https://repository.liferay.com/nexus/content/repositories/liferay-public-releases"
-				}
-			}
-	}
-
 	apply plugin: "com.liferay.plugin"
 
-	repositories {		
+	repositories {
 		maven {
-			url "https://repository.liferay.com/nexus/content/repositories/public/"
-		}
-		maven {
-			url "https://repository.liferay.com/nexus/content/repositories/liferay-public-releases/"
+			url "https://repository-cdn.liferay.com/nexus/content/groups/public"
 		}
 	}
 }

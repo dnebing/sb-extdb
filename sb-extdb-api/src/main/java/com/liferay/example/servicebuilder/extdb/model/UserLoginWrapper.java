@@ -14,16 +14,14 @@
 
 package com.liferay.example.servicebuilder.extdb.model;
 
-import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.kernel.model.ModelWrapper;
-import com.liferay.portal.kernel.service.ServiceContext;
-
-import java.io.Serializable;
+import com.liferay.portal.kernel.model.wrapper.BaseModelWrapper;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
+
+import org.osgi.annotation.versioning.ProviderType;
 
 /**
  * <p>
@@ -34,20 +32,13 @@ import java.util.Objects;
  * @see UserLogin
  * @generated
  */
-public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
+@ProviderType
+public class UserLoginWrapper
+	extends BaseModelWrapper<UserLogin>
+	implements UserLogin, ModelWrapper<UserLogin> {
 
 	public UserLoginWrapper(UserLogin userLogin) {
-		_userLogin = userLogin;
-	}
-
-	@Override
-	public Class<?> getModelClass() {
-		return UserLogin.class;
-	}
-
-	@Override
-	public String getModelClassName() {
-		return UserLogin.class.getName();
+		super(userLogin);
 	}
 
 	@Override
@@ -114,21 +105,6 @@ public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
 		}
 	}
 
-	@Override
-	public Object clone() {
-		return new UserLoginWrapper((UserLogin)_userLogin.clone());
-	}
-
-	@Override
-	public int compareTo(UserLogin userLogin) {
-		return _userLogin.compareTo(userLogin);
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _userLogin.getExpandoBridge();
-	}
-
 	/**
 	 * Returns the last login of this user login.
 	 *
@@ -136,7 +112,7 @@ public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
 	 */
 	@Override
 	public Date getLastLogin() {
-		return _userLogin.getLastLogin();
+		return model.getLastLogin();
 	}
 
 	/**
@@ -146,7 +122,7 @@ public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
 	 */
 	@Override
 	public long getLongestTimeBetweenLogins() {
-		return _userLogin.getLongestTimeBetweenLogins();
+		return model.getLongestTimeBetweenLogins();
 	}
 
 	/**
@@ -156,12 +132,7 @@ public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
 	 */
 	@Override
 	public String getPrimaryKey() {
-		return _userLogin.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _userLogin.getPrimaryKeyObj();
+		return model.getPrimaryKey();
 	}
 
 	/**
@@ -171,7 +142,7 @@ public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
 	 */
 	@Override
 	public String getScreenName() {
-		return _userLogin.getScreenName();
+		return model.getScreenName();
 	}
 
 	/**
@@ -181,7 +152,7 @@ public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
 	 */
 	@Override
 	public long getShortestTimeBetweenLogins() {
-		return _userLogin.getShortestTimeBetweenLogins();
+		return model.getShortestTimeBetweenLogins();
 	}
 
 	/**
@@ -191,7 +162,7 @@ public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
 	 */
 	@Override
 	public String getSystemName() {
-		return _userLogin.getSystemName();
+		return model.getSystemName();
 	}
 
 	/**
@@ -201,7 +172,7 @@ public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
 	 */
 	@Override
 	public long getTotalLogins() {
-		return _userLogin.getTotalLogins();
+		return model.getTotalLogins();
 	}
 
 	/**
@@ -211,59 +182,12 @@ public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
 	 */
 	@Override
 	public String getUuid() {
-		return _userLogin.getUuid();
+		return model.getUuid();
 	}
 
-	@Override
-	public int hashCode() {
-		return _userLogin.hashCode();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _userLogin.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _userLogin.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _userLogin.isNew();
-	}
-
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a user login model instance should use the <code>UserLogin</code> interface instead.
-	 */
 	@Override
 	public void persist() {
-		_userLogin.persist();
-	}
-
-	@Override
-	public void setCachedModel(boolean cachedModel) {
-		_userLogin.setCachedModel(cachedModel);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-
-		_userLogin.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_userLogin.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-		_userLogin.setExpandoBridgeAttributes(serviceContext);
+		model.persist();
 	}
 
 	/**
@@ -273,7 +197,7 @@ public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
 	 */
 	@Override
 	public void setLastLogin(Date lastLogin) {
-		_userLogin.setLastLogin(lastLogin);
+		model.setLastLogin(lastLogin);
 	}
 
 	/**
@@ -283,12 +207,7 @@ public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
 	 */
 	@Override
 	public void setLongestTimeBetweenLogins(long longestTimeBetweenLogins) {
-		_userLogin.setLongestTimeBetweenLogins(longestTimeBetweenLogins);
-	}
-
-	@Override
-	public void setNew(boolean n) {
-		_userLogin.setNew(n);
+		model.setLongestTimeBetweenLogins(longestTimeBetweenLogins);
 	}
 
 	/**
@@ -298,12 +217,7 @@ public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
 	 */
 	@Override
 	public void setPrimaryKey(String primaryKey) {
-		_userLogin.setPrimaryKey(primaryKey);
-	}
-
-	@Override
-	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-		_userLogin.setPrimaryKeyObj(primaryKeyObj);
+		model.setPrimaryKey(primaryKey);
 	}
 
 	/**
@@ -313,7 +227,7 @@ public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
 	 */
 	@Override
 	public void setScreenName(String screenName) {
-		_userLogin.setScreenName(screenName);
+		model.setScreenName(screenName);
 	}
 
 	/**
@@ -323,7 +237,7 @@ public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
 	 */
 	@Override
 	public void setShortestTimeBetweenLogins(long shortestTimeBetweenLogins) {
-		_userLogin.setShortestTimeBetweenLogins(shortestTimeBetweenLogins);
+		model.setShortestTimeBetweenLogins(shortestTimeBetweenLogins);
 	}
 
 	/**
@@ -333,7 +247,7 @@ public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
 	 */
 	@Override
 	public void setSystemName(String systemName) {
-		_userLogin.setSystemName(systemName);
+		model.setSystemName(systemName);
 	}
 
 	/**
@@ -343,7 +257,7 @@ public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
 	 */
 	@Override
 	public void setTotalLogins(long totalLogins) {
-		_userLogin.setTotalLogins(totalLogins);
+		model.setTotalLogins(totalLogins);
 	}
 
 	/**
@@ -353,75 +267,12 @@ public class UserLoginWrapper implements ModelWrapper<UserLogin>, UserLogin {
 	 */
 	@Override
 	public void setUuid(String uuid) {
-		_userLogin.setUuid(uuid);
+		model.setUuid(uuid);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<UserLogin>
-		toCacheModel() {
-
-		return _userLogin.toCacheModel();
+	protected UserLoginWrapper wrap(UserLogin userLogin) {
+		return new UserLoginWrapper(userLogin);
 	}
-
-	@Override
-	public UserLogin toEscapedModel() {
-		return new UserLoginWrapper(_userLogin.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return _userLogin.toString();
-	}
-
-	@Override
-	public UserLogin toUnescapedModel() {
-		return new UserLoginWrapper(_userLogin.toUnescapedModel());
-	}
-
-	@Override
-	public String toXmlString() {
-		return _userLogin.toXmlString();
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-
-		if (!(obj instanceof UserLoginWrapper)) {
-			return false;
-		}
-
-		UserLoginWrapper userLoginWrapper = (UserLoginWrapper)obj;
-
-		if (Objects.equals(_userLogin, userLoginWrapper._userLogin)) {
-			return true;
-		}
-
-		return false;
-	}
-
-	@Override
-	public UserLogin getWrappedModel() {
-		return _userLogin;
-	}
-
-	@Override
-	public boolean isEntityCacheEnabled() {
-		return _userLogin.isEntityCacheEnabled();
-	}
-
-	@Override
-	public boolean isFinderCacheEnabled() {
-		return _userLogin.isFinderCacheEnabled();
-	}
-
-	@Override
-	public void resetOriginalValues() {
-		_userLogin.resetOriginalValues();
-	}
-
-	private final UserLogin _userLogin;
 
 }

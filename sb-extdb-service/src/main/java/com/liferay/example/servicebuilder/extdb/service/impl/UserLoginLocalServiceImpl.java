@@ -14,8 +14,6 @@
 
 package com.liferay.example.servicebuilder.extdb.service.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.example.servicebuilder.extdb.model.UserLogin;
 import com.liferay.example.servicebuilder.extdb.service.base.UserLoginLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -23,6 +21,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.util.Date;
+
+import org.osgi.annotation.versioning.ProviderType;
 
 /**
  * The implementation of the user login local service.

@@ -14,11 +14,11 @@
 
 package com.liferay.example.servicebuilder.extdb.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.annotation.ImplementationClassName;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.Accessor;
+
+import org.osgi.annotation.versioning.ProviderType;
 
 /**
  * The extended model interface for the UserLogin service. Represents a row in the &quot;ExtDB_UserLogin&quot; database table, with each column mapped to a property of this class.
@@ -33,7 +33,7 @@ import com.liferay.portal.kernel.util.Accessor;
 @ProviderType
 public interface UserLogin extends PersistedModel, UserLoginModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.example.servicebuilder.extdb.model.impl.UserLoginImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

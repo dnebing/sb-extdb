@@ -50,6 +50,12 @@ The table shows the modules of the project is their purpose.
 
 
 
+Directly from the Liferay documentation, [Step 2: Create a Spring Bean...](https://portal.liferay.dev/docs/7-1/tutorials/-/knowledge_base/t/connecting-service-builder-to-external-databases#step-2-create-a-spring-bean-that-points-to-the-data-source), an important note for the 7.1 version of Liferay.
+
+![NoteSpringServiceContextExtender](docs/images/NoteSpringServiceContextExtender.png)
+
+
+
 The [service.xml](https://github.com/amusarra/sb-extdb/blob/master/sb-extdb-service/service.xml) file shows the definition of the **UserLogin** entity that mirrors the external database table.
 
 ```xml

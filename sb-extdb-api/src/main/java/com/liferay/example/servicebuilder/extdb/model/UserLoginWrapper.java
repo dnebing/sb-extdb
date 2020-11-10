@@ -21,8 +21,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.osgi.annotation.versioning.ProviderType;
-
 /**
  * <p>
  * This class is a wrapper for {@link UserLogin}.
@@ -32,10 +30,9 @@ import org.osgi.annotation.versioning.ProviderType;
  * @see UserLogin
  * @generated
  */
-@ProviderType
 public class UserLoginWrapper
 	extends BaseModelWrapper<UserLogin>
-	implements UserLogin, ModelWrapper<UserLogin> {
+	implements ModelWrapper<UserLogin>, UserLogin {
 
 	public UserLoginWrapper(UserLogin userLogin) {
 		super(userLogin);

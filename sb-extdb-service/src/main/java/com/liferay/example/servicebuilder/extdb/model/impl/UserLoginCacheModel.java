@@ -26,29 +26,26 @@ import java.io.ObjectOutput;
 
 import java.util.Date;
 
-import org.osgi.annotation.versioning.ProviderType;
-
 /**
  * The cache model class for representing UserLogin in entity cache.
  *
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class UserLoginCacheModel
 	implements CacheModel<UserLogin>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof UserLoginCacheModel)) {
+		if (!(object instanceof UserLoginCacheModel)) {
 			return false;
 		}
 
-		UserLoginCacheModel userLoginCacheModel = (UserLoginCacheModel)obj;
+		UserLoginCacheModel userLoginCacheModel = (UserLoginCacheModel)object;
 
 		if (uuid.equals(userLoginCacheModel.uuid)) {
 			return true;

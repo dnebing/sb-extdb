@@ -8,7 +8,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
 >
 	<bean class="com.liferay.example.servicebuilder.extdb.service.impl.UserLoginLocalServiceImpl" id="com.liferay.example.servicebuilder.extdb.service.UserLoginLocalService" />
-	<bean class="com.liferay.example.servicebuilder.extdb.service.persistence.impl.UserLoginPersistenceImpl" id="com.liferay.example.servicebuilder.extdb.service.persistence.UserLoginPersistence" parent="basePersistence">
+	<bean class="com.liferay.example.servicebuilder.extdb.service.persistence.impl.UserLoginPersistenceImpl" id="com.liferay.example.servicebuilder.extdb.service.persistence.UserLoginPersistence">
 		<property name="dataSource" ref="extDataSource" />
 	</bean>
 </beans>

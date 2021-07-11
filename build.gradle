@@ -1,37 +1,22 @@
 buildscript {
+	dependencies {
+		classpath group: "com.liferay", name: "com.liferay.gradle.plugins.workspace", version: "3.0.11"
+		classpath group: "net.saliman", name: "gradle-properties-plugin", version: "1.4.6"
+	}
+
 	repositories {
 		maven {
-			url "https://repository.liferay.com/nexus/content/repositories/public/"
+			url "https://repository-cdn.liferay.com/nexus/content/groups/public"
 		}
-		maven {
-			url "https://repository.liferay.com/nexus/content/repositories/liferay-public-releases/"
-		}
-	}
-	dependencies {
-		classpath group: "com.liferay", name: "com.liferay.gradle.plugins", version: "latest.release"
 	}
 }
 
 subprojects {
-	buildscript {
-			repositories {
-				maven {
-					url "https://repository.liferay.com/nexus/content/repositories/public/"
-				}
-				maven {
-					url "https://repository.liferay.com/nexus/content/repositories/liferay-public-releases"
-				}
-			}
-	}
-
 	apply plugin: "com.liferay.plugin"
 
-	repositories {		
+	repositories {
 		maven {
-			url "https://repository.liferay.com/nexus/content/repositories/public/"
-		}
-		maven {
-			url "https://repository.liferay.com/nexus/content/repositories/liferay-public-releases/"
+			url "https://repository-cdn.liferay.com/nexus/content/groups/public"
 		}
 	}
 }

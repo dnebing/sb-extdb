@@ -1,16 +1,11 @@
 Bundle-Name: SB External DB Service
 Bundle-SymbolicName: com.liferay.example.servicebuilder.extdb.service
-
-Bundle-Version: 1.0.0
-Liferay-Service: true
+Bundle-Version: 1.1.0
+Import-Package: \
+	org.springframework.jdbc.datasource,\
+	com.liferay.portal.dao.jdbc.spring,\
+	*
 Liferay-Require-SchemaVersion: 1.0.0
+Liferay-Service: true
 Liferay-Spring-Context: META-INF/spring
--plugin.service: com.liferay.ant.bnd.service.ServiceAnalyzerPlugin
--sources: true
-
 # Need to manually import classes referenced in spring xml files.
-Import-Package:\
-  org.springframework.jdbc.datasource,\
-  com.liferay.portal.dao.jdbc.spring,\
-  *
-

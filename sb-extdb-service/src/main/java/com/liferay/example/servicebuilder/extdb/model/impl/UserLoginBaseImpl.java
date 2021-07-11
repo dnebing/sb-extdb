@@ -14,8 +14,6 @@
 
 package com.liferay.example.servicebuilder.extdb.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.example.servicebuilder.extdb.model.UserLogin;
 import com.liferay.example.servicebuilder.extdb.service.UserLoginLocalServiceUtil;
 
@@ -31,13 +29,13 @@ import com.liferay.example.servicebuilder.extdb.service.UserLoginLocalServiceUti
  * @see UserLogin
  * @generated
  */
-@ProviderType
-public abstract class UserLoginBaseImpl extends UserLoginModelImpl
-	implements UserLogin {
+public abstract class UserLoginBaseImpl
+	extends UserLoginModelImpl implements UserLogin {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a user login model instance should use the {@link UserLogin} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a user login model instance should use the <code>UserLogin</code> interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -48,4 +46,5 @@ public abstract class UserLoginBaseImpl extends UserLoginModelImpl
 			UserLoginLocalServiceUtil.updateUserLogin(this);
 		}
 	}
+
 }

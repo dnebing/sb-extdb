@@ -14,43 +14,48 @@
 
 package com.liferay.example.servicebuilder.extdb.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.annotation.ImplementationClassName;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.Accessor;
+
+import org.osgi.annotation.versioning.ProviderType;
 
 /**
  * The extended model interface for the UserLogin service. Represents a row in the &quot;ExtDB_UserLogin&quot; database table, with each column mapped to a property of this class.
  *
  * @author Brian Wing Shun Chan
  * @see UserLoginModel
- * @see com.liferay.example.servicebuilder.extdb.model.impl.UserLoginImpl
- * @see com.liferay.example.servicebuilder.extdb.model.impl.UserLoginModelImpl
  * @generated
  */
-@ImplementationClassName("com.liferay.example.servicebuilder.extdb.model.impl.UserLoginImpl")
+@ImplementationClassName(
+	"com.liferay.example.servicebuilder.extdb.model.impl.UserLoginImpl"
+)
 @ProviderType
-public interface UserLogin extends UserLoginModel, PersistedModel {
+public interface UserLogin extends PersistedModel, UserLoginModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.example.servicebuilder.extdb.model.impl.UserLoginImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.example.servicebuilder.extdb.model.impl.UserLoginImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<UserLogin, Long> USER_ID_ACCESSOR = new Accessor<UserLogin, Long>() {
+	public static final Accessor<UserLogin, String> UUID_ACCESSOR =
+		new Accessor<UserLogin, String>() {
+
 			@Override
-			public Long get(UserLogin userLogin) {
-				return userLogin.getUserId();
+			public String get(UserLogin userLogin) {
+				return userLogin.getUuid();
 			}
 
 			@Override
-			public Class<Long> getAttributeClass() {
-				return Long.class;
+			public Class<String> getAttributeClass() {
+				return String.class;
 			}
 
 			@Override
 			public Class<UserLogin> getTypeClass() {
 				return UserLogin.class;
 			}
+
 		};
+
 }

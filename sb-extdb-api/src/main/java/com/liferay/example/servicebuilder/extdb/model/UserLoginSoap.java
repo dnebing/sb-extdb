@@ -14,8 +14,6 @@
 
 package com.liferay.example.servicebuilder.extdb.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,18 +24,24 @@ import java.util.List;
  * This class is used by SOAP remote services.
  *
  * @author Brian Wing Shun Chan
+ * @deprecated As of Athanasius (7.3.x), with no direct replacement
  * @generated
  */
-@ProviderType
+@Deprecated
 public class UserLoginSoap implements Serializable {
+
 	public static UserLoginSoap toSoapModel(UserLogin model) {
 		UserLoginSoap soapModel = new UserLoginSoap();
 
-		soapModel.setUserId(model.getUserId());
+		soapModel.setUuid(model.getUuid());
+		soapModel.setScreenName(model.getScreenName());
+		soapModel.setSystemName(model.getSystemName());
 		soapModel.setLastLogin(model.getLastLogin());
 		soapModel.setTotalLogins(model.getTotalLogins());
-		soapModel.setLongestTimeBetweenLogins(model.getLongestTimeBetweenLogins());
-		soapModel.setShortestTimeBetweenLogins(model.getShortestTimeBetweenLogins());
+		soapModel.setLongestTimeBetweenLogins(
+			model.getLongestTimeBetweenLogins());
+		soapModel.setShortestTimeBetweenLogins(
+			model.getShortestTimeBetweenLogins());
 
 		return soapModel;
 	}
@@ -70,7 +74,8 @@ public class UserLoginSoap implements Serializable {
 	}
 
 	public static UserLoginSoap[] toSoapModels(List<UserLogin> models) {
-		List<UserLoginSoap> soapModels = new ArrayList<UserLoginSoap>(models.size());
+		List<UserLoginSoap> soapModels = new ArrayList<UserLoginSoap>(
+			models.size());
 
 		for (UserLogin model : models) {
 			soapModels.add(toSoapModel(model));
@@ -82,20 +87,36 @@ public class UserLoginSoap implements Serializable {
 	public UserLoginSoap() {
 	}
 
-	public long getPrimaryKey() {
-		return _userId;
+	public String getPrimaryKey() {
+		return _uuid;
 	}
 
-	public void setPrimaryKey(long pk) {
-		setUserId(pk);
+	public void setPrimaryKey(String pk) {
+		setUuid(pk);
 	}
 
-	public long getUserId() {
-		return _userId;
+	public String getUuid() {
+		return _uuid;
 	}
 
-	public void setUserId(long userId) {
-		_userId = userId;
+	public void setUuid(String uuid) {
+		_uuid = uuid;
+	}
+
+	public String getScreenName() {
+		return _screenName;
+	}
+
+	public void setScreenName(String screenName) {
+		_screenName = screenName;
+	}
+
+	public String getSystemName() {
+		return _systemName;
+	}
+
+	public void setSystemName(String systemName) {
+		_systemName = systemName;
 	}
 
 	public Date getLastLogin() {
@@ -130,9 +151,12 @@ public class UserLoginSoap implements Serializable {
 		_shortestTimeBetweenLogins = shortestTimeBetweenLogins;
 	}
 
-	private long _userId;
+	private String _uuid;
+	private String _screenName;
+	private String _systemName;
 	private Date _lastLogin;
 	private long _totalLogins;
 	private long _longestTimeBetweenLogins;
 	private long _shortestTimeBetweenLogins;
+
 }

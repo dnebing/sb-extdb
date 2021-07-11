@@ -14,13 +14,10 @@
 
 package com.liferay.example.servicebuilder.extdb.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.example.servicebuilder.extdb.model.UserLogin;
-
+import com.liferay.petra.lang.HashUtil;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.model.CacheModel;
-import com.liferay.portal.kernel.util.HashUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -33,25 +30,24 @@ import java.util.Date;
  * The cache model class for representing UserLogin in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see UserLogin
  * @generated
  */
-@ProviderType
-public class UserLoginCacheModel implements CacheModel<UserLogin>,
-	Externalizable {
+public class UserLoginCacheModel
+	implements CacheModel<UserLogin>, Externalizable {
+
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof UserLoginCacheModel)) {
+		if (!(object instanceof UserLoginCacheModel)) {
 			return false;
 		}
 
-		UserLoginCacheModel userLoginCacheModel = (UserLoginCacheModel)obj;
+		UserLoginCacheModel userLoginCacheModel = (UserLoginCacheModel)object;
 
-		if (userId == userLoginCacheModel.userId) {
+		if (uuid.equals(userLoginCacheModel.uuid)) {
 			return true;
 		}
 
@@ -60,15 +56,19 @@ public class UserLoginCacheModel implements CacheModel<UserLogin>,
 
 	@Override
 	public int hashCode() {
-		return HashUtil.hash(0, userId);
+		return HashUtil.hash(0, uuid);
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(15);
 
-		sb.append("{userId=");
-		sb.append(userId);
+		sb.append("{uuid=");
+		sb.append(uuid);
+		sb.append(", screenName=");
+		sb.append(screenName);
+		sb.append(", systemName=");
+		sb.append(systemName);
 		sb.append(", lastLogin=");
 		sb.append(lastLogin);
 		sb.append(", totalLogins=");
@@ -86,7 +86,26 @@ public class UserLoginCacheModel implements CacheModel<UserLogin>,
 	public UserLogin toEntityModel() {
 		UserLoginImpl userLoginImpl = new UserLoginImpl();
 
-		userLoginImpl.setUserId(userId);
+		if (uuid == null) {
+			userLoginImpl.setUuid("");
+		}
+		else {
+			userLoginImpl.setUuid(uuid);
+		}
+
+		if (screenName == null) {
+			userLoginImpl.setScreenName("");
+		}
+		else {
+			userLoginImpl.setScreenName(screenName);
+		}
+
+		if (systemName == null) {
+			userLoginImpl.setSystemName("");
+		}
+		else {
+			userLoginImpl.setSystemName(systemName);
+		}
 
 		if (lastLogin == Long.MIN_VALUE) {
 			userLoginImpl.setLastLogin(null);
@@ -106,7 +125,9 @@ public class UserLoginCacheModel implements CacheModel<UserLogin>,
 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
-		userId = objectInput.readLong();
+		uuid = objectInput.readUTF();
+		screenName = objectInput.readUTF();
+		systemName = objectInput.readUTF();
 		lastLogin = objectInput.readLong();
 
 		totalLogins = objectInput.readLong();
@@ -117,9 +138,28 @@ public class UserLoginCacheModel implements CacheModel<UserLogin>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
-		objectOutput.writeLong(userId);
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+		if (uuid == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(uuid);
+		}
+
+		if (screenName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(screenName);
+		}
+
+		if (systemName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(systemName);
+		}
+
 		objectOutput.writeLong(lastLogin);
 
 		objectOutput.writeLong(totalLogins);
@@ -129,9 +169,12 @@ public class UserLoginCacheModel implements CacheModel<UserLogin>,
 		objectOutput.writeLong(shortestTimeBetweenLogins);
 	}
 
-	public long userId;
+	public String uuid;
+	public String screenName;
+	public String systemName;
 	public long lastLogin;
 	public long totalLogins;
 	public long longestTimeBetweenLogins;
 	public long shortestTimeBetweenLogins;
+
 }
